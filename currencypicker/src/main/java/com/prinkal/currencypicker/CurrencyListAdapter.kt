@@ -23,9 +23,7 @@ class CurrencyListAdapter(private val mContext: Context, var currencies: List<Ex
     }
 
     override fun getView(position: Int, view: View, parent: ViewGroup): View {
-        var view = view
         val currency = currencies[position]
-        if (view == null) view = inflater.inflate(R.layout.row, null)
         val cell = Cell.from(view)
         cell!!.textView!!.text = currency.name
         currency.loadFlagByCode(mContext)

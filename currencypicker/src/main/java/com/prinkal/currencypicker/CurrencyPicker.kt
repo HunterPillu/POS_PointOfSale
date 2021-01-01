@@ -37,7 +37,7 @@ class CurrencyPicker : DialogFragment() {
         selectedCurrenciesList.addAll(currenciesList)
         adapter = CurrencyListAdapter(activity!!, selectedCurrenciesList)
         currencyListView!!.adapter = adapter
-        currencyListView!!.onItemClickListener = OnItemClickListener { parent, view, position, id ->
+        currencyListView!!.onItemClickListener = OnItemClickListener { parent, _, position, id ->
             if (listener != null) {
                 val currency = selectedCurrenciesList[position]
                 listener!!.onSelectCurrency(currency.name, currency.code, currency.symbol,
@@ -85,7 +85,7 @@ class CurrencyPicker : DialogFragment() {
     fun setCurrenciesList(savedCurrencies: Set<String?>) {
         currenciesList.clear()
         for (code in savedCurrencies) {
-            currenciesList.add(ExtendedCurrency.getCurrencyByISO(code))
+            currenciesList.add(ExtendedCurrency.getCurrencyByISO(code)!!)
         }
     }
 

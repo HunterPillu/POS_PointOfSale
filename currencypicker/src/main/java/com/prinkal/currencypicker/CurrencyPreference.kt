@@ -92,7 +92,7 @@ class CurrencyPreference(context: Context, attrs: AttributeSet?) : ListPreferenc
     fun setCurrenciesList(savedCurrencies: Set<String?>?) {
         currenciesList.clear()
         for (code in savedCurrencies!!) {
-            currenciesList.add(ExtendedCurrency.getCurrencyByISO(code))
+            currenciesList.add(ExtendedCurrency.getCurrencyByISO(code)!!)
         }
     }
 

@@ -3,20 +3,7 @@ package com.prinkal.currencypicker
 import android.content.Context
 import java.util.*
 
-class ExtendedCurrency {
-    var code: String? = null
-    var name: String? = null
-    var symbol: String? = null
-    var flag = -1
-
-    constructor(code: String?, name: String?, symbol: String?, flag: Int) {
-        this.code = code
-        this.name = name
-        this.symbol = symbol
-        this.flag = flag
-    }
-
-    constructor() {}
+class ExtendedCurrency(var code: String?, var name: String, var symbol: String?, var flag: Int) {
 
     fun loadFlagByCode(context: Context) {
         if (flag != -1) return
@@ -156,7 +143,7 @@ class ExtendedCurrency {
             }
 
         @JvmStatic
-        fun getCurrencyByISO(currencyIsoCode: String): ExtendedCurrency? {
+        fun getCurrencyByISO(currencyIsoCode: String?): ExtendedCurrency? {
             // Because the data we have is sorted by ISO codes and not by names, we must check all
             // currencies one by one
             for (c in CURRENCIES) {
