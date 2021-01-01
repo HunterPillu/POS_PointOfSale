@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/textColor</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#404040</color>
+    <color name="gray">#929292</color>
+    <color name="white">#000000</color>
+    <color name="black">#ffffff</color>
+    <!-- Home Page related colors-->
+    <color name="backgroundColor">#e1e1e1</color>
+    <color name="actionBarItemColor">@color/colorAccent</color>
+    <color name="bottomNavBarItemColor">@color/colorAccent</color>
+
+    <!--some view's colors-->
+    <color name="buttonBackgroundColor">@color/colorAccent</color>
+    <color name="buttonBackgroundColorDark">#e63200</color>
+    <color name="toastTextColor">@color/colorAccent</color>
+
+    <!--text colors-->
+    <color name="textColor">#DBffffff</color>
+    <color name="secondaryTextColor">#80ffffff</color>
+    <color name="textColorLight">#80929292</color>
+    <color name="textColorGreen">#10c203</color>
+    <color name="darkColorGreen">#0d9902</color>
+    <color name="textColorRed">#f94f4f</color>
+    <!--stock colors-->
+    <color name="inStockColor">#70ffffff</color>
+    <color name="outOfStockColor">#FF6E6E</color>
+    <color name="divider_color">#3Fffffff</color>
+
+    <!--dialog-->
+    <color name="ac">#de1ece</color>
+    <color name="custom_dialog_button_background_color">@color/colorAccent</color>
+    <color name="custom_dialog_error_icon_background_color">#ff5858</color>
+    <color name="custom_dialog_success_icon_background_color">#00ff00</color>
+    <color name="custom_dialog_warning_icon_background_color">#ff9600</color>
+    <color name="test">#ffe732</color>
+
+
+</resources>

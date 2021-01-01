@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.prinkal.pos.app.constants.BundleConstants" />
+
+        <variable
+            name="data"
+            type="com.prinkal.pos.app.model.CartModel" />
+
+        <variable
+            name="visibility"
+            type="boolean" />
+
+        <variable
+            name="hasReturn"
+            type="boolean" />
+
+        <variable
+            name="handler"
+            type="com.prinkal.pos.app.handlers.CartHandler" />
+    </data>
+
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor"
+        tools:context="com.prinkal.pos.app.activity.CartActivity">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/spacing_generic"
+                    android:layout_marginLeft="@dimen/spacing_generic"
+                    android:layout_marginRight="@dimen/spacing_generic"
+                    android:layout_marginStart="@dimen/spacing_generic">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/hold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/delete"
+                        android:layout_toRightOf="@+id/delete"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{(v)-> handler.holdCart(data)}"
+                        android:padding="@dimen/spacing_generic"
+                        android:visibility="@{visibility ? View.VISIBLE : View.GONE}"
+                        app:srcCompat="@drawable/ic_vector_hold" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/delete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{(v)-> handler.deleteAll()}"
+                        android:padding="@dimen/spacing_generic"
+                        android:visibility="@{visibility ? View.VISIBLE : View.GONE}"
+                        app:srcCompat="@drawable/ic_icon_order_delete" />
+
+                </RelativeLayout>
+            </com.google.android.material.appbar.MaterialToolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/backgroundColor"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <include
+                android:id="@+id/empty_view"
+                layout="@layout/empty_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/spacing_generic"
+                app:page="@{BundleConstants.EmptyLayoutType.CART}"
+                app:visibility="@{visibility}" />
+
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="60dp"
+                android:visibility="@{visibility ? View.VISIBLE : View.GONE}">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/cart_details_ll"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/spacing_generic"
+                        android:orientation="vertical">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/cart_product_rv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/white"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/customer_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginTop="@dimen/spacing_tiny"
+                            android:background="@color/white"
+                            android:gravity="center_vertical"
+                            app:cardUseCompatPadding="true">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/customer"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableEnd="@drawable/ic_arrow_right_wrapper"
+                                android:drawableRight="@drawable/ic_arrow_right_wrapper"
+                                android:onClick="@{()->handler.selectCustomer(data.customer)}"
+                                android:padding="@dimen/spacing_normal"
+                                android:text="@{!data.customer.firstName.isEmpty()? data.customer.firstName +' '+data.customer.lastName : @string/customer}"
+                                android:textColor="@{!data.customer.firstName.isEmpty() ? @color/colorAccent : @color/textColor}"
+                                tools:text="@string/customer" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginTop="@dimen/spacing_tiny"
+                            android:background="@color/white"
+                            android:gravity="center_vertical"
+                            app:cardUseCompatPadding="true">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/discount"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableEnd="@drawable/ic_arrow_right_wrapper"
+                                android:enabled="false"
+                                android:gravity="center_vertical"
+                                android:padding="@dimen/spacing_normal"
+                                android:text="@string/apply_discount_code"
+                                android:textColor="@color/textColorLight"
+                                tools:text="@string/apply_discount_code" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginTop="@dimen/spacing_tiny"
+                            android:background="@color/white"
+                            android:gravity="center_vertical"
+                            android:visibility="gone"
+                            app:cardUseCompatPadding="true">
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/spacing_generic"
+                                android:orientation="horizontal">
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/customer_custom_discount_tnl"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="@dimen/spacing_normal"
+                                    android:layout_marginLeft="@dimen/spacing_generic"
+                                    android:layout_marginRight="@dimen/spacing_normal"
+                                    android:layout_marginStart="@dimen/spacing_generic"
+                                    android:layout_weight="2"
+                                    app:error="@{data.totals.discountError}"
+                                    app:errorEnabled="@{data.totals.displayError}">
+
+                                    <EditText
+                                        android:id="@+id/custom_discount"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerHorizontal="true"
+                                        android:layout_marginTop="30dp"
+                                        android:hint="@string/apply_custom_discount"
+                                        android:inputType="numberDecimal"
+                                        android:singleLine="true"
+                                        android:text="@={data.totals.Discount}"
+                                        android:textColorHint="@color/gray" />
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                                <com.google.android.material.button.MaterialButton
+                                    style="@style/DefaultButtonStyle"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:onClick="@{()->handler.customDiscount(data,data.totals.Discount)}"
+                                    android:text="@string/apply"
+                                    android:visibility="@{data.totals.FormatedDiscount.equalsIgnoreCase(`0.00`) ? View.VISIBLE : View.GONE}" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    style="@style/DefaultButtonStyle"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:onClick="@{()->handler.removeCustomDiscount(data)}"
+                                    android:text="@string/remove"
+                                    android:visibility="@{!data.totals.FormatedDiscount.equalsIgnoreCase(`0.00`) ? View.VISIBLE : View.GONE}" />
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginBottom="@dimen/spacing_normal"
+                            android:layout_marginTop="@dimen/spacing_tiny"
+                            android:background="@color/white"
+                            android:gravity="center_vertical"
+                            app:cardUseCompatPadding="true">
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="@dimen/spacing_normal">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/sub_total"
+                                        android:textSize="@dimen/text_size_small" />
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:text="@{data.totals.formatedSubTotal}"
+                                        android:textSize="@dimen/text_size_small"
+                                        tools:text="$759" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/spacing_tiny">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/tax"
+                                        android:textSize="@dimen/text_size_small"
+                                        tools:text="Tax (10%):" />
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:text="@{data.totals.formatedTax}"
+                                        android:textSize="@dimen/text_size_small"
+                                        tools:text="$75.90" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/spacing_tiny">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/discount"
+                                        android:textSize="@dimen/text_size_small" />
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:text="@{data.totals.formatedDiscount}"
+                                        android:textSize="@dimen/text_size_small"
+                                        tools:text="- $84.00" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/spacing_tiny">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/grand_total"
+                                        android:textSize="@dimen/text_size_small"
+                                        android:textStyle="bold" />
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:text="@{data.totals.formatedGrandTotal}"
+                                        android:textSize="@dimen/text_size_small"
+                                        android:textStyle="bold"
+                                        tools:text="$750.90" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/spacing_tiny">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/round_total"
+                                        android:textColor="@color/colorAccent"
+                                        android:textSize="@dimen/text_size_small"
+                                        android:textStyle="bold" />
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:text="@{data.totals.formatedRoundTotal}"
+                                        android:textColor="@color/colorAccent"
+                                        android:textSize="@dimen/text_size_small"
+                                        android:textStyle="bold"
+                                        tools:text="$751.00" />
+                                </RelativeLayout>
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+                        </com.google.android.material.card.MaterialCardView>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </FrameLayout>
+            </androidx.core.widget.NestedScrollView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/proceed"
+                style="@style/DefaultButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_margin="@dimen/spacing_generic"
+                android:drawableEnd="@drawable/ic_proceed_light_wrapper"
+                android:onClick="@{()->handler.proceedToCheckout(data)}"
+                android:text="@string/confirm_and_accept_payment"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold"
+                android:visibility="@{visibility &amp;&amp; !hasReturn ? View.VISIBLE : View.GONE}" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/return_items"
+                style="@style/DefaultButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_margin="@dimen/spacing_generic"
+                android:drawableEnd="@drawable/ic_proceed_light_wrapper"
+                android:onClick="@{()->handler.proceedToCheckout(data, hasReturn)}"
+                android:text="@string/return_items"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold"
+                android:visibility="@{visibility &amp;&amp; hasReturn ? View.VISIBLE : View.GONE}" />
+        </FrameLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

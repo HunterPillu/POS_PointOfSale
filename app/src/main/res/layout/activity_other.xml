@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="handler"
+            type="com.prinkal.pos.app.handlers.OtherActivityHandler" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.prinkal.pos.app.activity.OtherActivity">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <FrameLayout
+            android:id="@+id/other_fl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/backgroundColor"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_generic"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="@{()-> handler.exportDB()}">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/white"
+                            android:drawablePadding="@dimen/spacing_generic"
+                            android:drawableTop="@drawable/ic_export_wrapper"
+                            android:gravity="center"
+                            android:padding="@dimen/spacing_normal"
+                            android:text="@string/export_database"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/text_size_medium" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/spacing_generic"
+                        android:layout_weight="1"
+                        android:onClick="@{()-> handler.importDB()}">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/white"
+                            android:drawablePadding="@dimen/spacing_generic"
+                            android:drawableTop="@drawable/ic_import_wrapper"
+                            android:gravity="center"
+                            android:padding="@dimen/spacing_normal"
+                            android:text="@string/import_database"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/text_size_medium" />
+                    </com.google.android.material.card.MaterialCardView>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()-> handler.lowStockProducts()}">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorAccent"
+                        android:drawableLeft="@drawable/ic_low_stock_wappar"
+                        android:drawablePadding="@dimen/spacing_generic"
+                        android:drawableStart="@drawable/ic_low_stock_wappar"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_normal"
+                        android:text="@string/low_stock_products"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_medium" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_generic"
+                    android:onClick="@{()-> handler.selectCurrency()}">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:drawablePadding="@dimen/spacing_generic"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_normal"
+                        android:text="Select Currency"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_size_medium" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_generic"
+                    android:onClick="@{()-> handler.currencyConfig()}">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:drawablePadding="@dimen/spacing_generic"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_normal"
+                        android:text="Currency Configuration"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_size_medium" />
+                </com.google.android.material.card.MaterialCardView>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </FrameLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

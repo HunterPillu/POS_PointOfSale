@@ -1,0 +1,147 @@
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.prinkal.pos.app.db.entity.Tax" />
+
+        <variable
+            name="handler"
+            type="com.prinkal.pos.app.handlers.AddTaxFragmentHandler" />
+
+        <variable
+            name="isEdit"
+            type="boolean" />
+
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor"
+        tools:context="com.prinkal.pos.app.fragment.AddTaxFragment">
+
+        <!-- TODO: Update blank fragment layout -->
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_generic"
+                android:background="@android:color/white"
+                android:clickable="false"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_generic">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:text="@string/tax_rate"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/text_size_large" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:clickable="true"
+                    android:orientation="horizontal">
+
+                    <Switch
+                        android:id="@+id/enable_tax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="@={data.enabled}" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/enable_tax_rate"
+                        android:textSize="@dimen/text_size_medium" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tax_name_tnl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:error="@{data.taxNameError}"
+                    app:errorEnabled="@{data.displayError}">
+
+                    <EditText
+                        android:id="@+id/tax_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="30dp"
+                        android:hint="@string/tax_name"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:text="@={data.taxName}"
+                        android:textColorHint="@color/gray" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_tiny"
+                    android:text="@string/type"
+                    android:textSize="@dimen/text_size_medium" />
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/tax_type"
+                    app:selectedValue="@={data.type}" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:error="@{data.taxRateError}"
+                    app:errorEnabled="@{data.displayError}">
+
+                    <EditText
+                        android:id="@+id/tax_rate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="30dp"
+                        android:hint="@string/tax_rate"
+                        android:inputType="numberDecimal"
+                        android:singleLine="true"
+                        android:text="@={data.taxRate}"
+                        android:textColorHint="@color/gray" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_generic">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawableLeft="@drawable/ic_close_round"
+                        android:drawablePadding="@dimen/spacing_generic"
+                        android:onClick="@{()->handler.deleteTax(data)}"
+                        android:padding="@dimen/spacing_normal"
+                        android:text="@string/remove"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_size_large" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </com.google.android.material.card.MaterialCardView>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </FrameLayout>
+</layout>

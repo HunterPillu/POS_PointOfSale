@@ -1,0 +1,121 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+//apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion '30.0.2'
+    buildFeatures {
+        viewBinding = true
+        dataBinding = true
+    }
+    defaultConfig {
+        applicationId "com.prinkal.pos.app"
+        minSdkVersion 17
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
+    }
+
+    packagingOptions {
+        pickFirst 'META-INF/LICENSE.txt' // picks the JavaMail license file
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            resValue("string", "PORT_NUMBER", "8081")
+            /*  minifyEnabled true
+              proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'*/
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    /*SWEET ALERT DIALOG*/
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'com.github.f0ris.sweetalert:library:1.6.2'
+    implementation 'com.google.android.material:material:1.2.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    // ViewModel and LiveData
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    //kapt 'androidx.lifecycle-common-java8:lifecycle-compiler:2.2.0'
+
+    // Room
+    implementation 'androidx.room:room-runtime:2.2.6'
+    kapt 'androidx.room:room-compiler:2.2.6'
+    implementation 'androidx.cardview:cardview:1.0.0'
+
+    //GSON
+    implementation "com.google.code.gson:gson:$gson_version"
+
+    //glide
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+
+    //jsoup
+    implementation 'org.jsoup:jsoup:1.13.1'
+
+    //see database
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.3'
+
+    //java mail apis
+    implementation 'com.sun.mail:android-mail:1.6.5'
+    implementation 'com.sun.mail:android-activation:1.6.5'
+
+    //current time
+    implementation 'commons-net:commons-net:3.3'
+
+    //pdf
+    implementation 'com.itextpdf:itextpdf:5.0.6'
+
+    //barcode generation
+    implementation 'com.google.zxing:core:3.4.1'
+    implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
+
+    // barcode scanner
+    implementation 'info.androidhive:barcode-reader:1.1.5'
+    implementation project(':currencypicker')
+
+    //chart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup:android-times-square:1.7.10@aar'
+
+    // JSON Parsing
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.google.android.gms:play-services-vision:20.1.3'
+    implementation('com.google.firebase:firebase-crash:16.2.1') {
+        exclude group: 'com.google.android.gms', module: 'play-services-vision'
+    }
+    /*implementation('com.google.firebase:firebase-config:20.0.2') {
+        exclude group: 'com.google.android.gms', module: 'play-services-vision'
+    }*/
+}
+apply plugin: 'com.google.gms.google-services'

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "301070481696",
+    "firebase_url": "https://matka-520d3.firebaseio.com",
+    "project_id": "matka-520d3",
+    "storage_bucket": "matka-520d3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:301070481696:android:c2a9d9e4d1c71a15",
+        "android_client_info": {
+          "package_name": "com.prinkal.pos.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "301070481696-m506e2bbbqa6ihf0icbpt8ildg808mqo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.prinkal.pos.app",
+            "certificate_hash": "5abda0ea0fdcc745e0ecfd90f2194c3579c8b98e"
+          }
+        },
+        {
+          "client_id": "301070481696-eehv6gom74prsemf92an6acmkupt504j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQGs1M213U39tRuwD0DFGl_41UtUsy_qY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "301070481696-eehv6gom74prsemf92an6acmkupt504j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
