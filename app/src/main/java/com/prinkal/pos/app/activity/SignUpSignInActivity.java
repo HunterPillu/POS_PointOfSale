@@ -25,13 +25,13 @@ public class SignUpSignInActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        AppSharedPref.removeAllPref(this);
+       // AppSharedPref.removeAllPref(this);
         mBinding = DataBindingUtil.setContentView(SignUpSignInActivity.this, R.layout.activity_sign_up_sign_in);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
         Fragment fragment;
-        if (!AppSharedPref.isSignedUp(this, false)) {
+        if (AppSharedPref.isSignedUp(this, false)) {
             fragment = new SignUpFragment();
         } else {
             fragment = new SignInFragment();

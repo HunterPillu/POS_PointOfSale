@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.prinkal.pos.app.connections.ApiUtils;
+import com.prinkal.pos.app.connections.RetrofitClient;
 import com.prinkal.pos.app.db.converters.DataConverter;
 import com.prinkal.pos.app.db.entity.Administrator;
 import com.prinkal.pos.app.db.entity.CashDrawerModel;
@@ -15,8 +17,13 @@ import com.prinkal.pos.app.db.entity.OrderEntity;
 import com.prinkal.pos.app.db.entity.Product;
 import com.prinkal.pos.app.db.entity.Tax;
 import com.prinkal.pos.app.interfaces.DataBaseCallBack;
+import com.prinkal.pos.app.model.ApiResponse;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.prinkal.pos.app.activity.BaseActivity.TAG;
 import static com.prinkal.pos.app.constants.ApplicationConstants.ERROR_CODE;
@@ -137,6 +144,23 @@ public class DataBaseAsyncUtils {
         protected Boolean doInBackground(Administrator... administrators) {
             try {
                 db.administratorDao().insertAll(administrators);
+            ApiUtils.getAPIService().createUser(administrators[0]).enqueue(new Callback<ApiResponse>() {
+                @Override
+                public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                    if(null!=response.body()) {
+                        Log.d("APIResponse", response.body().toString());
+                    }else{
+                        Log.d("APIResponse", "null rseponse");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ApiResponse> call, Throwable t) {
+                    Log.d("APIResponse", "onFailure");
+                t.printStackTrace();
+                }
+            });
+
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;

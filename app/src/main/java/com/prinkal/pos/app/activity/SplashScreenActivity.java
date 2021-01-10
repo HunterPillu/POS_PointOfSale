@@ -124,13 +124,15 @@ public class SplashScreenActivity extends AppCompatActivity {
         } catch (SQLiteException e) {
             Log.d(TAG, "checkDataBase: SQLiteException---" + e);
             e.printStackTrace();
-            Helper.setDefaultDataBase(this);
-            AppSharedPref.setSignedUp(this, true);
+            //Helper.setDefaultDataBase(this);
+            //prinkal
+            //AppSharedPref.setSignedUp(this, true);
         } catch (Exception e) {
             Log.d(TAG, "checkDataBase: Exception " + e);
             e.printStackTrace();
-            Helper.setDefaultDataBase(this);
-            AppSharedPref.setSignedUp(this, true);
+            //Helper.setDefaultDataBase(this);
+            //prinkal
+            //AppSharedPref.setSignedUp(this, true);
         }
         return checkDB != null;
     }

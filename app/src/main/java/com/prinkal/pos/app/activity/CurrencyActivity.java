@@ -58,7 +58,7 @@ public class CurrencyActivity extends BaseActivity implements SharedPreferences.
         } else {
             SweetAlertBox.getInstance().showProgressDialog(this);
             if (AppSharedPref.getCurrencyRate(this, "").equalsIgnoreCase("")) {
-                ApiUtils.getAPIService().getRates(APP_ID, "USD").enqueue(new Callback<OpenExchangeRate>() {
+                ApiUtils.getExchangeAPIService().getRates(APP_ID, "USD").enqueue(new Callback<OpenExchangeRate>() {
                     @Override
                     public void onResponse(Call<OpenExchangeRate> call, Response<OpenExchangeRate> response) {
                         AppSharedPref.setCurrencyRate(CurrencyActivity.this, new Gson().toJson(response.body()) + "");

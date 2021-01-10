@@ -101,7 +101,8 @@ public class MoreFragmentHandler {
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {
                         sDialog.dismissWithAnimation();
-                        AppSharedPref.getSharedPreferenceEditor(context, USER_PREF).clear().apply();
+                        AppSharedPref.removeAllPref(context);
+                        //AppSharedPref.getSharedPreferenceEditor(context, USER_PREF).clear().apply();
                         Intent i = new Intent(context, SignUpSignInActivity.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(i);
