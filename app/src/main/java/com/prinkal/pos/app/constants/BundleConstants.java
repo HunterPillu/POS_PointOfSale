@@ -23,4 +23,8 @@ public class BundleConstants {
     public enum EmptyLayoutType {
         PRODUCT, CATEGORY, ORDER, CART, WISHLIST, NOTIFICATION, CUSTOMER, HOLD, PAYMENT, CASHDRAWER, OPTIONS, TAX, LOW_STOCK
     }
+
+    public enum Status{
+        PENDING,FINISHED,RUNNING
+    }
 }

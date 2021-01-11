@@ -1,11 +1,9 @@
 package com.prinkal.pos.app.db;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.prinkal.pos.app.connections.ApiUtils;
-import com.prinkal.pos.app.connections.RetrofitClient;
 import com.prinkal.pos.app.db.converters.DataConverter;
 import com.prinkal.pos.app.db.entity.Administrator;
 import com.prinkal.pos.app.db.entity.CashDrawerModel;
@@ -55,7 +53,7 @@ import static com.prinkal.pos.app.constants.ApplicationConstants.SUCCESS_MSG_9_O
 
 
 public class DataBaseAsyncUtils {
-    static DataBaseAsyncUtils dataBaseAsyncUtils;
+    private static DataBaseAsyncUtils dataBaseAsyncUtils;
 
     public static synchronized DataBaseAsyncUtils getInstanse() {
         if (dataBaseAsyncUtils == null)
@@ -63,7 +61,7 @@ public class DataBaseAsyncUtils {
         return dataBaseAsyncUtils;
     }
 
-    class GetAdminByEmailAsyncTask extends AsyncTask<Administrator, Void,
+    class GetAdminByEmailAsyncTask extends CoroutinesAsyncTask<Administrator, Void,
             Administrator> {
 
         private final DataBaseCallBack dataBaseCallBack;
@@ -75,7 +73,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Administrator doInBackground(Administrator... administrators) {
+        public Administrator doInBackground(Administrator... administrators) {
             Administrator administrator;
             try {
                 administrator = db.administratorDao().findByEmail(administrators[0].getEmail(), administrators[0].getPassword());
@@ -87,7 +85,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Administrator administrator) {
+        public void onPostExecute(Administrator administrator) {
             super.onPostExecute(administrator);
             if (administrator != null)
                 dataBaseCallBack.onSuccess(administrator, SUCCESS_MSG_2_SIGN_IN);
@@ -96,7 +94,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    class GetAllAdminAsyncTask extends AsyncTask<Void, Void,
+    class GetAllAdminAsyncTask extends CoroutinesAsyncTask<Void, Void,
             Administrator> {
 
         private final DataBaseCallBack dataBaseCallBack;
@@ -108,7 +106,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Administrator doInBackground(Void... voids) {
+        public Administrator doInBackground(Void... voids) {
             Administrator administrator;
             try {
                 administrator = db.administratorDao().getAll();
@@ -120,7 +118,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Administrator administrator) {
+        public void onPostExecute(Administrator administrator) {
             super.onPostExecute(administrator);
             if (administrator != null)
                 dataBaseCallBack.onSuccess(administrator, SUCCESS_MSG_2_SIGN_IN);
@@ -129,7 +127,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class AddAdminAsyncTask extends AsyncTask<Administrator, Void,
+    public class AddAdminAsyncTask extends CoroutinesAsyncTask<Administrator, Void,
             Boolean> {
 
         private AppDatabase db;
@@ -141,25 +139,25 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Boolean doInBackground(Administrator... administrators) {
+        public Boolean doInBackground(Administrator... administrators) {
             try {
                 db.administratorDao().insertAll(administrators);
-            ApiUtils.getAPIService().createUser(administrators[0]).enqueue(new Callback<ApiResponse>() {
-                @Override
-                public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                    if(null!=response.body()) {
-                        Log.d("APIResponse", response.body().toString());
-                    }else{
-                        Log.d("APIResponse", "null rseponse");
+                ApiUtils.getAPIService().createUser(administrators[0]).enqueue(new Callback<ApiResponse>() {
+                    @Override
+                    public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                        if (null != response.body()) {
+                            Log.d("APIResponse", response.body().toString());
+                        } else {
+                            Log.d("APIResponse", "null rseponse");
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<ApiResponse> call, Throwable t) {
-                    Log.d("APIResponse", "onFailure");
-                t.printStackTrace();
-                }
-            });
+                    @Override
+                    public void onFailure(Call<ApiResponse> call, Throwable t) {
+                        Log.d("APIResponse", "onFailure");
+                        t.printStackTrace();
+                    }
+                });
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -169,7 +167,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
+        public void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if (aBoolean) {
                 dataBaseCallBack.onSuccess(true, SUCCESS_MSG_1_SIGN_UP);
@@ -178,7 +176,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class UpdateAdmin extends AsyncTask<Administrator, Void,
+    public class UpdateAdmin extends CoroutinesAsyncTask<Administrator, Void,
             Boolean> {
 
         private AppDatabase db;
@@ -190,7 +188,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Boolean doInBackground(Administrator... administrator) {
+        public Boolean doInBackground(Administrator... administrator) {
             try {
                 db.administratorDao().updateAdminById(administrator[0].getFirstName(), administrator[0].getLastName(), administrator[0].getUsername(), administrator[0].getUid());
             } catch (Exception e) {
@@ -201,7 +199,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
+        public void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if (aBoolean) {
                 dataBaseCallBack.onSuccess(true, SUCCESS_MSG_1_UPDATE_ADMIN_DETAILS);
@@ -210,7 +208,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class AddCategoryAsyncTask extends AsyncTask<Category, Void,
+    public class AddCategoryAsyncTask extends CoroutinesAsyncTask<Category, Void,
             Boolean> {
 
         private AppDatabase db;
@@ -222,7 +220,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Boolean doInBackground(Category... categories) {
+        public Boolean doInBackground(Category... categories) {
             try {
                 db.categoryDao().insertAll(categories);
             } catch (Exception e) {
@@ -232,7 +230,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
+        public void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if (aBoolean) {
                 dataBaseCallBack.onSuccess(true, SUCCESS_MSG_3_ADD_CATEGORY);
@@ -241,7 +239,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class GetCategoryAsyncTask extends AsyncTask<Void, Void,
+    public class GetCategoryAsyncTask extends CoroutinesAsyncTask<Void, Void,
             List<Category>> {
 
         private AppDatabase db;
@@ -253,13 +251,13 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected List<Category> doInBackground(Void... voids) {
+        public List<Category> doInBackground(Void... voids) {
             List<Category> categories = db.categoryDao().getAll();
             return categories;
         }
 
         @Override
-        protected void onPostExecute(List<Category> categoryList) {
+        public void onPostExecute(List<Category> categoryList) {
             super.onPostExecute(categoryList);
             if (categoryList != null) {
                 dataBaseCallBack.onSuccess(categoryList, SUCCESS_MSG);
@@ -270,7 +268,7 @@ public class DataBaseAsyncUtils {
     }
 
 
-    public class GetDrawerIncludedCategories extends AsyncTask<Void, Void,
+    public class GetDrawerIncludedCategories extends CoroutinesAsyncTask<Void, Void,
             List<Category>> {
 
         private AppDatabase db;
@@ -282,13 +280,13 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected List<Category> doInBackground(Void... voids) {
+        public List<Category> doInBackground(Void... voids) {
             List<Category> categories = db.categoryDao().getCategoryIncludedInDrawerMenu(true, true);
             return categories;
         }
 
         @Override
-        protected void onPostExecute(List<Category> categoryList) {
+        public void onPostExecute(List<Category> categoryList) {
             super.onPostExecute(categoryList);
             if (categoryList != null) {
                 dataBaseCallBack.onSuccess(categoryList, SUCCESS_MSG);
@@ -298,7 +296,7 @@ public class DataBaseAsyncUtils {
 
     }
 
-    public class UpdateCategoryById extends AsyncTask<Category, Void,
+    public class UpdateCategoryById extends CoroutinesAsyncTask<Category, Void,
             Boolean> {
 
         private AppDatabase db;
@@ -310,7 +308,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Boolean doInBackground(Category... categories) {
+        public Boolean doInBackground(Category... categories) {
             try {
                 db.categoryDao().updateCategoryById(categories[0].getCategoryName(), categories[0].isActive(), categories[0].isIncludeInDrawerMenu(), categories[0].getCId());
             } catch (Exception e) {
@@ -321,7 +319,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
+        public void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if (aBoolean) {
                 dataBaseCallBack.onSuccess(aBoolean, SUCCESS_MSG_4_UPDATE_CATEGORY);
@@ -331,7 +329,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class DeleteCategoryById extends AsyncTask<Category, Void,
+    public class DeleteCategoryById extends CoroutinesAsyncTask<Category, Void,
             Boolean> {
 
         private AppDatabase db;
@@ -343,7 +341,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Boolean doInBackground(Category... categories) {
+        public Boolean doInBackground(Category... categories) {
             try {
                 db.categoryDao().delete(categories[0]);
             } catch (Exception e) {
@@ -354,7 +352,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
+        public void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if (aBoolean) {
                 dataBaseCallBack.onSuccess(aBoolean, SUCCESS_MSG_5_DELETE_CATEGORY);
@@ -364,14 +362,14 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class AddProductAsyncTask extends AsyncTask<Product, Void,
+    public class AddProductAsyncTask extends CoroutinesAsyncTask<Product, Void,
             Long> {
 
         private AppDatabase db;
         private final DataBaseCallBack dataBaseCallBack;
 
         @Override
-        protected void onPreExecute() {
+        public void onPreExecute() {
             super.onPreExecute();
         }
 
@@ -381,7 +379,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Long doInBackground(Product... products) {
+        public Long doInBackground(Product... products) {
             long[] id;
             try {
                 id = db.productDao().insertAll(products);
@@ -393,7 +391,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Long id) {
+        public void onPostExecute(Long id) {
             super.onPostExecute(id);
             if (id != 0) {
                 dataBaseCallBack.onSuccess(id, SUCCESS_MSG_6_ADD_PRODUCT);
@@ -402,7 +400,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class UpdateProductImages extends AsyncTask<Void, Void,
+    public class UpdateProductImages extends CoroutinesAsyncTask<Void, Void,
             Boolean> {
 
         private AppDatabase db;
@@ -418,7 +416,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Boolean doInBackground(Void... voids) {
+        public Boolean doInBackground(Void... voids) {
             long[] id;
             try {
                 db.productDao().updateProductImages(imagePath, pId);
@@ -430,7 +428,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Boolean success) {
+        public void onPostExecute(Boolean success) {
             super.onPostExecute(success);
             if (success)
                 callBack.onSuccess(success, SUCCESS_MSG_6_ADD_PRODUCT);
@@ -439,7 +437,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class GetAllProducts extends AsyncTask<Void, Void,
+    public class GetAllProducts extends CoroutinesAsyncTask<Void, Void,
             List<Product>> {
 
         private AppDatabase db;
@@ -451,13 +449,13 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected List<Product> doInBackground(Void... voids) {
+        public List<Product> doInBackground(Void... voids) {
             List<Product> products = db.productDao().getAll();
             return products;
         }
 
         @Override
-        protected void onPostExecute(List<Product> products) {
+        public void onPostExecute(List<Product> products) {
             super.onPostExecute(products);
             if (products != null) {
                 dataBaseCallBack.onSuccess(products, SUCCESS_MSG);
@@ -466,7 +464,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class GetAllEnabledProducts extends AsyncTask<Void, Void,
+    public class GetAllEnabledProducts extends CoroutinesAsyncTask<Void, Void,
             List<Product>> {
 
         private AppDatabase db;
@@ -478,13 +476,13 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected List<Product> doInBackground(Void... voids) {
+        public List<Product> doInBackground(Void... voids) {
             List<Product> products = db.productDao().getEnabledProduct(true);
             return products;
         }
 
         @Override
-        protected void onPostExecute(List<Product> products) {
+        public void onPostExecute(List<Product> products) {
             super.onPostExecute(products);
             if (products != null) {
                 dataBaseCallBack.onSuccess(products, SUCCESS_MSG);
@@ -493,7 +491,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class GetAllLowStockProducts extends AsyncTask<Integer, Void,
+    public class GetAllLowStockProducts extends CoroutinesAsyncTask<Integer, Void,
             List<Product>> {
 
         private AppDatabase db;
@@ -505,13 +503,13 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected List<Product> doInBackground(Integer... qty) {
+        public List<Product> doInBackground(Integer... qty) {
             List<Product> products = db.productDao().getLowStockProducts(qty[0]);
             return products;
         }
 
         @Override
-        protected void onPostExecute(List<Product> products) {
+        public void onPostExecute(List<Product> products) {
             super.onPostExecute(products);
             if (products != null) {
                 dataBaseCallBack.onSuccess(products, SUCCESS_MSG);
@@ -520,7 +518,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class UpdateProduct extends AsyncTask<Product, Void,
+    public class UpdateProduct extends CoroutinesAsyncTask<Product, Void,
             Boolean> {
 
         private AppDatabase db;
@@ -532,7 +530,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Boolean doInBackground(Product... products) {
+        public Boolean doInBackground(Product... products) {
             try {
                 db.productDao().updateProduct(products[0].getImage()
                         , products[0].isEnabled()
@@ -557,7 +555,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
+        public void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if (aBoolean) {
                 dataBaseCallBack.onSuccess(aBoolean, SUCCESS_MSG_8_UPDATE_PRODUCT);
@@ -567,7 +565,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class UpdateProductQty extends AsyncTask<Product, Void,
+    public class UpdateProductQty extends CoroutinesAsyncTask<Product, Void,
             Boolean> {
 
         private Context context;
@@ -579,7 +577,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Boolean doInBackground(Product... products) {
+        public Boolean doInBackground(Product... products) {
             try {
 //                Log.d(TAG, "doInBackground: qty" + Integer.parseInt(products[0].getQuantity()) + "---" + Integer.parseInt(products[0].getCartQty()));
 //                if (!AppSharedPref.isReturnCart(context))
@@ -596,12 +594,12 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
+        public void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
         }
     }
 
-    public class DeleteProduct extends AsyncTask<Product, Void,
+    public class DeleteProduct extends CoroutinesAsyncTask<Product, Void,
             Boolean> {
 
         private AppDatabase db;
@@ -613,7 +611,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Boolean doInBackground(Product... products) {
+        public Boolean doInBackground(Product... products) {
             try {
                 db.productDao().delete(products[0]);
             } catch (Exception e) {
@@ -624,7 +622,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
+        public void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if (aBoolean) {
                 dataBaseCallBack.onSuccess(aBoolean, SUCCESS_MSG_7_DELETE_PRODUCT);
@@ -634,7 +632,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class CheckSkuExist extends AsyncTask<String, Void,
+    public class CheckSkuExist extends CoroutinesAsyncTask<String, Void,
             Product> {
 
         private AppDatabase db;
@@ -646,7 +644,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Product doInBackground(String... sku) {
+        public Product doInBackground(String... sku) {
             Product product = null;
             try {
                 product = db.productDao().checkSkuExist(sku[0]);
@@ -657,7 +655,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Product product) {
+        public void onPostExecute(Product product) {
             super.onPostExecute(product);
             if (product != null) {
                 dataBaseCallBack.onSuccess(product, SUCCESS_MSG_10_SKU_ALLREADY_EXIST);
@@ -667,7 +665,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class GetAllCustomers extends AsyncTask<Void, Void,
+    public class GetAllCustomers extends CoroutinesAsyncTask<Void, Void,
             List<Customer>> {
 
         private AppDatabase db;
@@ -679,13 +677,13 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected List<Customer> doInBackground(Void... voids) {
+        public List<Customer> doInBackground(Void... voids) {
             List<Customer> customers = db.customerDao().getAll();
             return customers;
         }
 
         @Override
-        protected void onPostExecute(List<Customer> customers) {
+        public void onPostExecute(List<Customer> customers) {
             super.onPostExecute(customers);
             if (customers != null) {
                 dataBaseCallBack.onSuccess(customers, SUCCESS_MSG);
@@ -696,7 +694,7 @@ public class DataBaseAsyncUtils {
     }
 
 
-    public class AddCustomerAsyncTask extends AsyncTask<Customer, Void,
+    public class AddCustomerAsyncTask extends CoroutinesAsyncTask<Customer, Void,
             Boolean> {
 
         private AppDatabase db;
@@ -708,7 +706,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Boolean doInBackground(Customer... customers) {
+        public Boolean doInBackground(Customer... customers) {
             try {
                 db.customerDao().insertAll(customers[0]);
             } catch (Exception e) {
@@ -719,7 +717,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
+        public void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if (aBoolean) {
                 dataBaseCallBack.onSuccess(true, SUCCESS_MSG_6_ADD_CUSTOMER);
@@ -729,7 +727,7 @@ public class DataBaseAsyncUtils {
     }
 
 
-    public class UpdateCustomerAsyncTask extends AsyncTask<Customer, Void,
+    public class UpdateCustomerAsyncTask extends CoroutinesAsyncTask<Customer, Void,
             Boolean> {
 
         private AppDatabase db;
@@ -741,7 +739,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Boolean doInBackground(Customer... customers) {
+        public Boolean doInBackground(Customer... customers) {
             try {
                 db.customerDao().updateCustomerById(customers[0].getFirstName()
                         , customers[0].getLastName()
@@ -761,7 +759,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
+        public void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if (aBoolean) {
                 dataBaseCallBack.onSuccess(true, SUCCESS_MSG_8_UPDATE_CUSTOMER);
@@ -770,7 +768,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class DeleteCustomer extends AsyncTask<Customer, Void,
+    public class DeleteCustomer extends CoroutinesAsyncTask<Customer, Void,
             Boolean> {
 
         private AppDatabase db;
@@ -782,7 +780,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Boolean doInBackground(Customer... customers) {
+        public Boolean doInBackground(Customer... customers) {
             try {
                 db.customerDao().delete(customers[0]);
             } catch (Exception e) {
@@ -793,7 +791,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
+        public void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if (aBoolean) {
                 dataBaseCallBack.onSuccess(aBoolean, SUCCESS_MSG_7_DELETE_CUSTOMER);
@@ -803,7 +801,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class CheckEmailExist extends AsyncTask<String, Void,
+    public class CheckEmailExist extends CoroutinesAsyncTask<String, Void,
             Customer> {
 
         private AppDatabase db;
@@ -815,7 +813,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Customer doInBackground(String... email) {
+        public Customer doInBackground(String... email) {
             Customer customer;
             try {
                 customer = db.customerDao().checkEmailExist(email[0]);
@@ -827,7 +825,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Customer customer) {
+        public void onPostExecute(Customer customer) {
             super.onPostExecute(customer);
             if (customer != null) {
                 dataBaseCallBack.onSuccess(customer, SUCCESS_MSG_9_CUSTOMER_ALL_READY_EXIST);
@@ -837,7 +835,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class CheckNumberExist extends AsyncTask<String, Void,
+    public class CheckNumberExist extends CoroutinesAsyncTask<String, Void,
             Customer> {
 
         private AppDatabase db;
@@ -849,7 +847,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Customer doInBackground(String... number) {
+        public Customer doInBackground(String... number) {
             Customer customer = null;
             try {
                 customer = db.customerDao().checkNumberExist(number[0]);
@@ -860,7 +858,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Customer customer) {
+        public void onPostExecute(Customer customer) {
             super.onPostExecute(customer);
             if (customer != null) {
                 dataBaseCallBack.onSuccess(customer, SUCCESS_MSG_9_CUSTOMER_ALL_READY_EXIST);
@@ -870,7 +868,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class GenerateOrderAsyncTask extends AsyncTask<OrderEntity, Void,
+    public class GenerateOrderAsyncTask extends CoroutinesAsyncTask<OrderEntity, Void,
             Long> {
 
         private AppDatabase db;
@@ -882,7 +880,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Long doInBackground(OrderEntity... orders) {
+        public Long doInBackground(OrderEntity... orders) {
             long[] id;
             try {
                 id = db.orderDao().insertAll(orders[0]);
@@ -895,7 +893,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Long orderId) {
+        public void onPostExecute(Long orderId) {
             super.onPostExecute(orderId);
             if (orderId != 0) {
                 dataBaseCallBack.onSuccess(orderId, SUCCESS_MSG_9_ORDER_PLACED);
@@ -904,7 +902,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class UpdateRefundedOrderId extends AsyncTask<Void, Void,
+    public class UpdateRefundedOrderId extends CoroutinesAsyncTask<Void, Void,
             Boolean> {
 
         private AppDatabase db;
@@ -922,7 +920,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Boolean doInBackground(Void... voids) {
+        public Boolean doInBackground(Void... voids) {
             long[] id;
             try {
                 db.orderDao().updateRefundedOrderId(currentOrderId, Integer.parseInt(returnedOrderId) - 10000);
@@ -934,7 +932,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Boolean success) {
+        public void onPostExecute(Boolean success) {
             super.onPostExecute(success);
             if (success) {
                 dataBaseCallBack.onSuccess(success, SUCCESS_MSG_9_ORDER_PLACED);
@@ -943,7 +941,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class GetOrders extends AsyncTask<Void, Void,
+    public class GetOrders extends CoroutinesAsyncTask<Void, Void,
             List<OrderEntity>> {
 
         private AppDatabase db;
@@ -955,13 +953,13 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected List<OrderEntity> doInBackground(Void... voids) {
+        public List<OrderEntity> doInBackground(Void... voids) {
             List<OrderEntity> orders = db.orderDao().getAll();
             return orders;
         }
 
         @Override
-        protected void onPostExecute(List<OrderEntity> orders) {
+        public void onPostExecute(List<OrderEntity> orders) {
             super.onPostExecute(orders);
             if (orders != null) {
                 dataBaseCallBack.onSuccess(orders, SUCCESS_MSG);
@@ -970,7 +968,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class GetOrdersById extends AsyncTask<String, Void,
+    public class GetOrdersById extends CoroutinesAsyncTask<String, Void,
             OrderEntity> {
 
         private AppDatabase db;
@@ -982,13 +980,13 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected OrderEntity doInBackground(String... orderIds) {
+        public OrderEntity doInBackground(String... orderIds) {
             OrderEntity orders = db.orderDao().loadByIds(Integer.parseInt(orderIds[0]));
             return orders;
         }
 
         @Override
-        protected void onPostExecute(OrderEntity order) {
+        public void onPostExecute(OrderEntity order) {
             super.onPostExecute(order);
             if (order != null) {
                 dataBaseCallBack.onSuccess(order, SUCCESS_MSG);
@@ -997,7 +995,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class GetSearchData extends AsyncTask<String, Void,
+    public class GetSearchData extends CoroutinesAsyncTask<String, Void,
             List<Product>> {
 
         private AppDatabase db;
@@ -1009,12 +1007,12 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected List<Product> doInBackground(String... texts) {
+        public List<Product> doInBackground(String... texts) {
             return db.productDao().getSearchData(texts[0]);
         }
 
         @Override
-        protected void onPostExecute(List<Product> searchData) {
+        public void onPostExecute(List<Product> searchData) {
             super.onPostExecute(searchData);
             if (searchData != null) {
                 dataBaseCallBack.onSuccess(searchData, SUCCESS_MSG);
@@ -1023,7 +1021,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class GetSearchOrders extends AsyncTask<String, Void,
+    public class GetSearchOrders extends CoroutinesAsyncTask<String, Void,
             List<OrderEntity>> {
 
         private AppDatabase db;
@@ -1035,12 +1033,12 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected List<OrderEntity> doInBackground(String... texts) {
+        public List<OrderEntity> doInBackground(String... texts) {
             return db.orderDao().getSearchOrders(texts[0]);
         }
 
         @Override
-        protected void onPostExecute(List<OrderEntity> searchData) {
+        public void onPostExecute(List<OrderEntity> searchData) {
             super.onPostExecute(searchData);
             if (searchData != null) {
                 dataBaseCallBack.onSuccess(searchData, SUCCESS_MSG);
@@ -1049,7 +1047,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class DeleteAllTables extends AsyncTask<Void, Void,
+    public class DeleteAllTables extends CoroutinesAsyncTask<Void, Void,
             Void> {
 
         private AppDatabase db;
@@ -1059,7 +1057,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Void doInBackground(Void... texts) {
+        public Void doInBackground(Void... texts) {
             db.orderDao().delete();
             db.productDao().delete();
             db.categoryDao().delete();
@@ -1072,7 +1070,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class AddCartDataToHoldCart extends AsyncTask<HoldCart, Void,
+    public class AddCartDataToHoldCart extends CoroutinesAsyncTask<HoldCart, Void,
             Long> {
 
         private AppDatabase db;
@@ -1084,7 +1082,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Long doInBackground(HoldCart... holdCarts) {
+        public Long doInBackground(HoldCart... holdCarts) {
             long[] id;
             try {
                 id = db.holdCartDao().insertAll(holdCarts[0]);
@@ -1097,7 +1095,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Long orderId) {
+        public void onPostExecute(Long orderId) {
             super.onPostExecute(orderId);
             if (orderId != 0) {
                 dataBaseCallBack.onSuccess(orderId, SUCCESS_MSG_1_ADD_HOLD_CART);
@@ -1106,7 +1104,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class GetHoldCartData extends AsyncTask<Void, Void,
+    public class GetHoldCartData extends CoroutinesAsyncTask<Void, Void,
             List<HoldCart>> {
 
         private AppDatabase db;
@@ -1118,13 +1116,13 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected List<HoldCart> doInBackground(Void... voids) {
+        public List<HoldCart> doInBackground(Void... voids) {
             List<HoldCart> holdCarts = db.holdCartDao().getAll();
             return holdCarts;
         }
 
         @Override
-        protected void onPostExecute(List<HoldCart> holdCarts) {
+        public void onPostExecute(List<HoldCart> holdCarts) {
             super.onPostExecute(holdCarts);
             if (holdCarts != null) {
                 dataBaseCallBack.onSuccess(holdCarts, SUCCESS_MSG);
@@ -1133,7 +1131,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class DeleteHoldCartById extends AsyncTask<HoldCart, Void,
+    public class DeleteHoldCartById extends CoroutinesAsyncTask<HoldCart, Void,
             Boolean> {
 
         private AppDatabase db;
@@ -1143,7 +1141,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Boolean doInBackground(HoldCart... holdCarts) {
+        public Boolean doInBackground(HoldCart... holdCarts) {
             try {
                 db.holdCartDao().delete(holdCarts[0].getHoldCartId() - 12000);
             } catch (Exception e) {
@@ -1154,12 +1152,12 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
+        public void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
         }
     }
 
-    public class GetProductByBarcode extends AsyncTask<String, Void,
+    public class GetProductByBarcode extends CoroutinesAsyncTask<String, Void,
             Product> {
 
         private AppDatabase db;
@@ -1171,12 +1169,12 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Product doInBackground(String... texts) {
+        public Product doInBackground(String... texts) {
             return db.productDao().getProductByBarcode(texts[0]);
         }
 
         @Override
-        protected void onPostExecute(Product searchData) {
+        public void onPostExecute(Product searchData) {
             super.onPostExecute(searchData);
             if (searchData != null) {
                 dataBaseCallBack.onSuccess(searchData, SUCCESS_MSG);
@@ -1185,7 +1183,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class AddCashDrawerData extends AsyncTask<CashDrawerModel, Void,
+    public class AddCashDrawerData extends CoroutinesAsyncTask<CashDrawerModel, Void,
             Void> {
 
         private AppDatabase db;
@@ -1195,7 +1193,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Void doInBackground(CashDrawerModel... cashDrawerModels) {
+        public Void doInBackground(CashDrawerModel... cashDrawerModels) {
             try {
                 db.cashDrawerDao().insertAll(cashDrawerModels[0]);
             } catch (Exception e) {
@@ -1205,7 +1203,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class UpdateCashData extends AsyncTask<CashDrawerModel, Void,
+    public class UpdateCashData extends CoroutinesAsyncTask<CashDrawerModel, Void,
             Boolean> {
 
         private AppDatabase db;
@@ -1217,7 +1215,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Boolean doInBackground(CashDrawerModel... cashDrawerModel) {
+        public Boolean doInBackground(CashDrawerModel... cashDrawerModel) {
             try {
                 DataConverter converter = new DataConverter();
                 db.cashDrawerDao().updateCashDrawerModelByDate(cashDrawerModel[0].getClosingBalance()
@@ -1238,7 +1236,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Boolean success) {
+        public void onPostExecute(Boolean success) {
             super.onPostExecute(success);
             if (success) {
                 callBack.onSuccess(success, "Update!");
@@ -1248,7 +1246,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class GetCashDrawerDataByDate extends AsyncTask<String, Void,
+    public class GetCashDrawerDataByDate extends CoroutinesAsyncTask<String, Void,
             CashDrawerModel> {
 
         private AppDatabase db;
@@ -1260,12 +1258,12 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected CashDrawerModel doInBackground(String... date) {
+        public CashDrawerModel doInBackground(String... date) {
             return db.cashDrawerDao().loadAllByDate(date[0]);
         }
 
         @Override
-        protected void onPostExecute(CashDrawerModel cashDrawerModel) {
+        public void onPostExecute(CashDrawerModel cashDrawerModel) {
             super.onPostExecute(cashDrawerModel);
             if (cashDrawerModel != null) {
                 dataBaseCallBack.onSuccess(cashDrawerModel, SUCCESS_MSG);
@@ -1274,7 +1272,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class GetAllCashDrawerData extends AsyncTask<Void, Void,
+    public class GetAllCashDrawerData extends CoroutinesAsyncTask<Void, Void,
             List<CashDrawerModel>> {
 
         private AppDatabase db;
@@ -1286,12 +1284,12 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected List<CashDrawerModel> doInBackground(Void... voids) {
+        public List<CashDrawerModel> doInBackground(Void... voids) {
             return db.cashDrawerDao().getAll();
         }
 
         @Override
-        protected void onPostExecute(List<CashDrawerModel> cashDrawerModelList) {
+        public void onPostExecute(List<CashDrawerModel> cashDrawerModelList) {
             super.onPostExecute(cashDrawerModelList);
             if (cashDrawerModelList != null) {
                 dataBaseCallBack.onSuccess(cashDrawerModelList, SUCCESS_MSG);
@@ -1300,7 +1298,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class AddOptions extends AsyncTask<Options, Void,
+    public class AddOptions extends CoroutinesAsyncTask<Options, Void,
             Long> {
 
         private AppDatabase db;
@@ -1312,13 +1310,13 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Long doInBackground(Options... options) {
+        public Long doInBackground(Options... options) {
             Long[] id = db.optionDao().insertAll(options);
             return id[0];
         }
 
         @Override
-        protected void onPostExecute(Long id) {
+        public void onPostExecute(Long id) {
             super.onPostExecute(id);
             if (id != null) {
                 dataBaseCallBack.onSuccess(id, SUCCESS_MSG_1_ADD_OPTION);
@@ -1327,7 +1325,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class GetOptions extends AsyncTask<Void, Void,
+    public class GetOptions extends CoroutinesAsyncTask<Void, Void,
             List<Options>> {
 
         private AppDatabase db;
@@ -1339,12 +1337,12 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected List<Options> doInBackground(Void... voids) {
+        public List<Options> doInBackground(Void... voids) {
             return db.optionDao().getAll();
         }
 
         @Override
-        protected void onPostExecute(List<Options> options) {
+        public void onPostExecute(List<Options> options) {
             super.onPostExecute(options);
             if (options != null) {
                 dataBaseCallBack.onSuccess(options, SUCCESS_MSG);
@@ -1353,7 +1351,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class UpdateOptions extends AsyncTask<Options, Void,
+    public class UpdateOptions extends CoroutinesAsyncTask<Options, Void,
             Boolean> {
 
         private AppDatabase db;
@@ -1365,7 +1363,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Boolean doInBackground(Options... options) {
+        public Boolean doInBackground(Options... options) {
             try {
                 db.optionDao().updateOptionsById(options[0].getOptionName()
                         , options[0].getType()
@@ -1379,7 +1377,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
+        public void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if (aBoolean) {
                 dataBaseCallBack.onSuccess(aBoolean, SUCCESS_MSG_3_UPDATE_OPTION);
@@ -1389,7 +1387,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class DeleteOption extends AsyncTask<Options, Void,
+    public class DeleteOption extends CoroutinesAsyncTask<Options, Void,
             Boolean> {
 
         private AppDatabase db;
@@ -1401,7 +1399,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Boolean doInBackground(Options... options) {
+        public Boolean doInBackground(Options... options) {
             try {
                 db.optionDao().delete(options[0]);
             } catch (Exception e) {
@@ -1412,7 +1410,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
+        public void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if (aBoolean) {
                 dataBaseCallBack.onSuccess(aBoolean, SUCCESS_MSG_2_DELETE_OPTION);
@@ -1423,7 +1421,7 @@ public class DataBaseAsyncUtils {
     }
 
 
-    public class AddTaxRate extends AsyncTask<Tax, Void,
+    public class AddTaxRate extends CoroutinesAsyncTask<Tax, Void,
             Long> {
 
         private AppDatabase db;
@@ -1435,13 +1433,13 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Long doInBackground(Tax... taxes) {
+        public Long doInBackground(Tax... taxes) {
             Long[] id = db.taxDao().insertAll(taxes);
             return id[0];
         }
 
         @Override
-        protected void onPostExecute(Long id) {
+        public void onPostExecute(Long id) {
             super.onPostExecute(id);
             if (id != null) {
                 dataBaseCallBack.onSuccess(id, SUCCESS_MSG_1_ADD_TAX_RATE);
@@ -1450,7 +1448,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class GetAllTaxes extends AsyncTask<Void, Void,
+    public class GetAllTaxes extends CoroutinesAsyncTask<Void, Void,
             List<Tax>> {
 
         private AppDatabase db;
@@ -1462,13 +1460,13 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected List<Tax> doInBackground(Void... voids) {
+        public List<Tax> doInBackground(Void... voids) {
             List<Tax> taxes = db.taxDao().getAll();
             return taxes;
         }
 
         @Override
-        protected void onPostExecute(List<Tax> taxes) {
+        public void onPostExecute(List<Tax> taxes) {
             super.onPostExecute(taxes);
             if (taxes != null) {
                 dataBaseCallBack.onSuccess(taxes, SUCCESS_MSG);
@@ -1477,7 +1475,7 @@ public class DataBaseAsyncUtils {
         }
     }
 
-    public class UpdateTaxRate extends AsyncTask<Tax, Void,
+    public class UpdateTaxRate extends CoroutinesAsyncTask<Tax, Void,
             Boolean> {
 
         private AppDatabase db;
@@ -1489,7 +1487,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Boolean doInBackground(Tax... taxes) {
+        public Boolean doInBackground(Tax... taxes) {
             try {
                 db.taxDao().updateTaxById(taxes[0].getTaxName(), taxes[0].isEnabled(), taxes[0].getTaxRate(), taxes[0].getTaxId());
             } catch (Exception e) {
@@ -1500,7 +1498,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
+        public void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if (aBoolean) {
                 dataBaseCallBack.onSuccess(true, SUCCESS_MSG_3_UPDATE_TAX);
@@ -1510,7 +1508,7 @@ public class DataBaseAsyncUtils {
     }
 
 
-    public class GetAllEnabledTaxes extends AsyncTask<Void, Void,
+    public class GetAllEnabledTaxes extends CoroutinesAsyncTask<Void, Void,
             List<Tax>> {
 
         private AppDatabase db;
@@ -1522,13 +1520,13 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected List<Tax> doInBackground(Void... voids) {
+        public List<Tax> doInBackground(Void... voids) {
             List<Tax> tax = db.taxDao().getEnabledTax(true);
             return tax;
         }
 
         @Override
-        protected void onPostExecute(List<Tax> taxList) {
+        public void onPostExecute(List<Tax> taxList) {
             super.onPostExecute(taxList);
             if (taxList != null) {
                 dataBaseCallBack.onSuccess(taxList, SUCCESS_MSG);
@@ -1538,7 +1536,7 @@ public class DataBaseAsyncUtils {
     }
 
 
-    public class DeleteTax extends AsyncTask<Tax, Void,
+    public class DeleteTax extends CoroutinesAsyncTask<Tax, Void,
             Boolean> {
 
         private AppDatabase db;
@@ -1550,7 +1548,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Boolean doInBackground(Tax... taxes) {
+        public Boolean doInBackground(Tax... taxes) {
             try {
                 db.taxDao().delete(taxes[0]);
             } catch (Exception e) {
@@ -1561,7 +1559,7 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
+        public void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if (aBoolean) {
                 dataBaseCallBack.onSuccess(aBoolean, SUCCESS_MSG_2_DELETE_TAX);
