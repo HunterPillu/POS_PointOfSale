@@ -61,7 +61,7 @@ public class OrdersFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        DataBaseController.getInstanse().getOrders(getActivity(), new DataBaseCallBack() {
+        DataBaseController.getInstance().getOrders(getActivity(), new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String successMsg) {
                 if (!responseData.toString().equalsIgnoreCase("[]")) {
@@ -118,7 +118,7 @@ public class OrdersFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 if (newText.length() > 0) {
                     newText = "%" + newText + "%";
-                    DataBaseController.getInstanse().getSearchOrders(getActivity(), newText, new DataBaseCallBack() {
+                    DataBaseController.getInstance().getSearchOrders(getActivity(), newText, new DataBaseCallBack() {
                         @Override
                         public void onSuccess(Object responseData, String successMsg) {
                             if (!(searchOrders.toString().equalsIgnoreCase(responseData.toString()))) {

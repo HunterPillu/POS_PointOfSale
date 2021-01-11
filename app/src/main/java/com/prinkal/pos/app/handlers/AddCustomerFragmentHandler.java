@@ -25,7 +25,7 @@ public class AddCustomerFragmentHandler {
 
         if (isValidated(customer)) {
             if (!isEdit) {
-                DataBaseController.getInstanse().addCustomer(context, customer, new DataBaseCallBack() {
+                DataBaseController.getInstance().addCustomer(context, customer, new DataBaseCallBack() {
                     @Override
                     public void onSuccess(Object responseData, String successMsg) {
                         Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(com.prinkal.pos.app.fragment.AddCustomerFragment.class.getSimpleName());
@@ -43,7 +43,7 @@ public class AddCustomerFragmentHandler {
                     }
                 });
             } else {
-                DataBaseController.getInstanse().updateCustomer(context, customer, new DataBaseCallBack() {
+                DataBaseController.getInstance().updateCustomer(context, customer, new DataBaseCallBack() {
                     @Override
                     public void onSuccess(Object responseData, String successMsg) {
                         Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(com.prinkal.pos.app.fragment.AddCustomerFragment.class.getSimpleName());
@@ -93,7 +93,7 @@ public class AddCustomerFragmentHandler {
 
     public void deleteCustomer(Customer customer) {
         if (customer != null) {
-            DataBaseController.getInstanse().deleteCustomer(context, customer, new DataBaseCallBack() {
+            DataBaseController.getInstance().deleteCustomer(context, customer, new DataBaseCallBack() {
                 @Override
                 public void onSuccess(Object responseData, String successMsg) {
                     Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(AddCustomerFragment.class.getSimpleName());

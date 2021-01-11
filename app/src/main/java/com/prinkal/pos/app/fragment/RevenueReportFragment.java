@@ -73,7 +73,7 @@ public class RevenueReportFragment extends Fragment {
 
     private void setRevenueChart() {
 
-        DataBaseController.getInstanse().getAllCashHistory(getActivity(), new DataBaseCallBack() {
+        DataBaseController.getInstance().getAllCashHistory(getActivity(), new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String successMsg) {
 //                binding.revenueChart.setOnChartValueSelectedListener(SalesAndReportingActivity.this);

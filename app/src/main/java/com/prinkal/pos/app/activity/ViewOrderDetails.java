@@ -37,7 +37,7 @@ public class ViewOrderDetails extends BaseActivity {
                 setTitle(String.format(getString(R.string.return_order_id), orderData.getOrderId() + ""));
             setAdapter(orderData);
         } else if (getIntent().getExtras().containsKey("order_id")) {
-            DataBaseController.getInstanse().getOrderById(this, getIntent().getExtras().getString("order_id"), new DataBaseCallBack() {
+            DataBaseController.getInstance().getOrderById(this, getIntent().getExtras().getString("order_id"), new DataBaseCallBack() {
                 @Override
                 public void onSuccess(Object responseData, String successMsg) {
                     orderData = (OrderEntity) responseData;

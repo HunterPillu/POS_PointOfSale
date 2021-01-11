@@ -54,7 +54,7 @@ public class ManageCategoriesFragment extends Fragment {
         }
         ((ProductActivity) getContext())
                 .setTitle(getContext().getString(R.string.choose_categories));
-        DataBaseController.getInstanse().getCategory(getActivity(), new DataBaseCallBack() {
+        DataBaseController.getInstance().getCategory(getActivity(), new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String msg) {
                 if (!responseData.toString().equalsIgnoreCase("[]")) {

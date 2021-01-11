@@ -73,7 +73,7 @@ public class OptionHandler {
         options.setOptionValues(optionValuesList);
         if (isValidated(options)) {
             if (!isEdit)
-                DataBaseController.getInstanse().addOption(context, options, new DataBaseCallBack() {
+                DataBaseController.getInstance().addOption(context, options, new DataBaseCallBack() {
                     @Override
                     public void onSuccess(Object responseData, String successMsg) {
                         ToastHelper.showToast(context, successMsg, Toast.LENGTH_LONG);
@@ -86,7 +86,7 @@ public class OptionHandler {
                     }
                 });
             else {
-                DataBaseController.getInstanse().updateOptions(context, options, new DataBaseCallBack() {
+                DataBaseController.getInstance().updateOptions(context, options, new DataBaseCallBack() {
                     @Override
                     public void onSuccess(Object responseData, String successMsg) {
                         ToastHelper.showToast(context, successMsg, Toast.LENGTH_LONG);
@@ -124,7 +124,7 @@ public class OptionHandler {
 
     public void deleteOption(Options options) {
         if (options != null) {
-            DataBaseController.getInstanse().deleteOption(context, options, new DataBaseCallBack() {
+            DataBaseController.getInstance().deleteOption(context, options, new DataBaseCallBack() {
                 @Override
                 public void onSuccess(Object responseData, String successMsg) {
                     Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(AddOptionFragment.class.getSimpleName());

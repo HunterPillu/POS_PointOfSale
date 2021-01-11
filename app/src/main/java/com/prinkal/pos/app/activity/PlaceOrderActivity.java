@@ -57,7 +57,7 @@ public class PlaceOrderActivity extends BaseActivity {
         cashDrawerItemsList = new ArrayList<>();
         cashDrawerItems = new CashDrawerItems();
         for (Product product : cartData.getProducts()) {
-            DataBaseController.getInstanse().updateProductQty(PlaceOrderActivity.this, product);
+            DataBaseController.getInstance().updateProductQty(PlaceOrderActivity.this, product);
         }
 
         binding.setHasReturn(AppSharedPref.isReturnCart(this));
@@ -76,14 +76,14 @@ public class PlaceOrderActivity extends BaseActivity {
         binding.setOrderData(order);
         final CashDrawerModel cashDrawerModel = new CashDrawerModel();
 
-        DataBaseController.getInstanse().generateOrder((BaseActivity) PlaceOrderActivity.this, order, new DataBaseCallBack() {
+        DataBaseController.getInstance().generateOrder((BaseActivity) PlaceOrderActivity.this, order, new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String successMsg) {
                 final long orderId = (long) responseData;
                 order.setOrderId(orderId);
                 if (AppSharedPref.isReturnCart(PlaceOrderActivity.this)) {
                     setTitle("Order Return #" + order.getOrderId());
-                    DataBaseController.getInstanse().updateRefundedOrderId(PlaceOrderActivity.this, AppSharedPref.getReturnOrderId(PlaceOrderActivity.this), orderId + "", new DataBaseCallBack() {
+                    DataBaseController.getInstance().updateRefundedOrderId(PlaceOrderActivity.this, AppSharedPref.getReturnOrderId(PlaceOrderActivity.this), orderId + "", new DataBaseCallBack() {
                         @Override
                         public void onSuccess(Object responseData, String successMsg) {
 //                            Toast.makeText(PlaceOrderActivity.this, successMsg + "", Toast.LENGTH_SHORT).show();
@@ -114,7 +114,7 @@ public class PlaceOrderActivity extends BaseActivity {
                 ToastHelper.showToast(PlaceOrderActivity.this, successMsg, Toast.LENGTH_SHORT);
                 AppSharedPref.deleteCartData(PlaceOrderActivity.this);
 
-                DataBaseController.getInstanse().getCashHistoryByDate(PlaceOrderActivity.this, date, new DataBaseCallBack() {
+                DataBaseController.getInstance().getCashHistoryByDate(PlaceOrderActivity.this, date, new DataBaseCallBack() {
                     @Override
                     public void onSuccess(Object responseData, String successMsg) {
 
@@ -141,7 +141,7 @@ public class PlaceOrderActivity extends BaseActivity {
                         cashDrawerItemsList.add(cashDrawerItems);
                         cashDrawerModel.setCashDrawerItems(cashDrawerItemsList);
 
-                        DataBaseController.getInstanse().updateCashDrawer(PlaceOrderActivity.this, cashDrawerModel, new DataBaseCallBack() {
+                        DataBaseController.getInstance().updateCashDrawer(PlaceOrderActivity.this, cashDrawerModel, new DataBaseCallBack() {
                             @Override
                             public void onSuccess(Object responseData, String successMsg) {
                             }

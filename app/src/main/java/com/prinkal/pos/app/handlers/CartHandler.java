@@ -63,7 +63,7 @@ public class CartHandler {
             String currentTime = simpleDateFormat.format(new Date());
             holdCart.setTime(currentTime + "");
 
-            DataBaseController.getInstanse().addHoldCart(context, holdCart, new DataBaseCallBack() {
+            DataBaseController.getInstance().addHoldCart(context, holdCart, new DataBaseCallBack() {
                 @Override
                 public void onSuccess(Object responseData, String successMsg) {
                     AppSharedPref.deleteCartData(context);

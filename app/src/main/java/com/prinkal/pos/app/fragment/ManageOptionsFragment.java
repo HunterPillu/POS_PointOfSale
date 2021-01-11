@@ -71,7 +71,7 @@ public class ManageOptionsFragment extends Fragment {
     }
 
     public void setProductOptions() {
-        DataBaseController.getInstanse().getOptions(getActivity(), new DataBaseCallBack() {
+        DataBaseController.getInstance().getOptions(getActivity(), new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String msg) {
                 if (!responseData.toString().equalsIgnoreCase("[]")) {

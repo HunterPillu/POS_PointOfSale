@@ -45,7 +45,7 @@ public class CustomerActivity extends BaseActivity {
     }
 
     private void setCustomers(final Customer customer) {
-        DataBaseController.getInstanse().getCustomer(this, new DataBaseCallBack() {
+        DataBaseController.getInstance().getCustomer(this, new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String successMsg) {
                 if (!responseData.toString().equalsIgnoreCase("[]")) {

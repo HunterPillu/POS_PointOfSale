@@ -26,7 +26,7 @@ public class HoldCartItemHandler {
     }
 
     public void addToCart(final HoldCart holdCart) {
-        DataBaseController.getInstanse().deleteHoldCart(context, holdCart);
+        DataBaseController.getInstance().deleteHoldCart(context, holdCart);
         if (fromStringToCartModel(AppSharedPref.getCartData(context)) != null && fromStringToCartModel(AppSharedPref.getCartData(context)).getProducts().size() > 0) {
             CartModel cartData = fromStringToCartModel(AppSharedPref.getCartData(context));
             final HoldCart holdCart1 = new HoldCart();
@@ -39,7 +39,7 @@ public class HoldCartItemHandler {
             String currentTime = simpleDateFormat.format(new Date());
             holdCart1.setTime(currentTime + "");
 
-            DataBaseController.getInstanse().addHoldCart(context, holdCart1, new DataBaseCallBack() {
+            DataBaseController.getInstance().addHoldCart(context, holdCart1, new DataBaseCallBack() {
                 @Override
                 public void onSuccess(Object responseData, String successMsg) {
                     AppSharedPref.deleteCartData(context);

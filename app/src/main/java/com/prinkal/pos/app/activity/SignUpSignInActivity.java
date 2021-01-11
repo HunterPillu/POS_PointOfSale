@@ -31,7 +31,7 @@ public class SignUpSignInActivity extends BaseActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
         Fragment fragment;
-        if (AppSharedPref.isSignedUp(this, false)) {
+        if (!AppSharedPref.isSignedUp(this, false)) {
             fragment = new SignUpFragment();
         } else {
             fragment = new SignInFragment();

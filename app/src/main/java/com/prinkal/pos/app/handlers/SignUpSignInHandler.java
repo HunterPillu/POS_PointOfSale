@@ -29,9 +29,8 @@ import static android.content.ContentValues.TAG;
 
 public class SignUpSignInHandler {
 
-    private Context context;
+    private final Context context;
     private Administrator administrator;
-    private Vibrator vibrateObject;
 
     public SignUpSignInHandler(Context context, Administrator administrator) {
         this.context = context;
@@ -42,7 +41,7 @@ public class SignUpSignInHandler {
     public void signUp(Administrator data) {
         if (isFormValidated()) {
 
-            DataBaseController.getInstanse().insertAdministorDetails(context, data, new DataBaseCallBack() {
+            DataBaseController.getInstance().insertAdministorDetails(context, data, new DataBaseCallBack() {
                 @Override
                 public void onSuccess(Object responseData, String successMsg) {
                     Intent i = new Intent(context, WalkthroughActivity.class);
@@ -75,7 +74,7 @@ public class SignUpSignInHandler {
 
     public void signIn(Administrator data) {
         if (isSignInFormValidated()) {
-            DataBaseController.getInstanse().getAdminDataByEmail(context, data, new DataBaseCallBack() {
+            DataBaseController.getInstance().getAdminDataByEmail(context, data, new DataBaseCallBack() {
                 @Override
                 public void onSuccess(Object responseData, String successMsg) {
                     administrator = (Administrator) responseData;
@@ -137,7 +136,7 @@ public class SignUpSignInHandler {
     }
 
     private void shake(View view) {
-        vibrateObject = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        Vibrator vibrateObject = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 200 milliseconds
         vibrateObject.vibrate(300);
         view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake_error));

@@ -36,7 +36,7 @@ public class OptionsActivity extends BaseActivity {
     }
 
     public void setOption() {
-        DataBaseController.getInstanse().getOptions(this, new DataBaseCallBack() {
+        DataBaseController.getInstance().getOptions(this, new DataBaseCallBack() {
 
             @Override
             public void onSuccess(Object responseData, String msg) {

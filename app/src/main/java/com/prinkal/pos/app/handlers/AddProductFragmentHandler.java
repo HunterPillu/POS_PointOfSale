@@ -70,7 +70,7 @@ public class AddProductFragmentHandler {
     public void saveProduct(final Product product, boolean isEdit) {
         if (isValidated(product)) {
             if (!isEdit) {
-                DataBaseController.getInstanse().addProduct(context, product, new DataBaseCallBack() {
+                DataBaseController.getInstance().addProduct(context, product, new DataBaseCallBack() {
                     @Override
                     public void onSuccess(Object responseData, String successMsg) {
                         if (!product.getImage().isEmpty()) {
@@ -82,7 +82,7 @@ public class AddProductFragmentHandler {
                             File from = new File(directory, "0.jpg");
                             File to = new File(directory, responseData + ".jpg");
                             if (rename(from, to)) {
-                                DataBaseController.getInstanse().updateProductImages(context, image, (Long) responseData, new
+                                DataBaseController.getInstance().updateProductImages(context, image, (Long) responseData, new
 
                                         DataBaseCallBack() {
                                             @Override
@@ -120,7 +120,7 @@ public class AddProductFragmentHandler {
                     }
                 });
             } else {
-                DataBaseController.getInstanse().updateProduct(context, product, new DataBaseCallBack() {
+                DataBaseController.getInstance().updateProduct(context, product, new DataBaseCallBack() {
                     @Override
                     public void onSuccess(Object responseData, String successMsg) {
                         Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(AddProductFragment.class.getSimpleName());
@@ -232,7 +232,7 @@ public class AddProductFragmentHandler {
 
     public void deleteProduct(Product product) {
         if (product != null) {
-            DataBaseController.getInstanse().deleteProduct(context, product, new DataBaseCallBack() {
+            DataBaseController.getInstance().deleteProduct(context, product, new DataBaseCallBack() {
                 @Override
                 public void onSuccess(Object responseData, String successMsg) {
                     Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(AddProductFragment.class.getSimpleName());

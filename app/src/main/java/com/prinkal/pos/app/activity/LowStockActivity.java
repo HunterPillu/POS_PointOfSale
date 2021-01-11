@@ -34,7 +34,7 @@ public class LowStockActivity extends BaseActivity {
     }
 
     private void loadLowStockProduct() {
-        DataBaseController.getInstanse().getAllLowStockProducts(this, 5, new DataBaseCallBack() {
+        DataBaseController.getInstance().getAllLowStockProducts(this, 5, new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String msg) {
                 if (!responseData.toString().equalsIgnoreCase("[]")) {

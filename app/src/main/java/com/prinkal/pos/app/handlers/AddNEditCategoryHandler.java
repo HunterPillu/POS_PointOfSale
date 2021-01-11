@@ -29,7 +29,7 @@ public class AddNEditCategoryHandler {
                 data.setParentId(0);
                 data.setLevel(1);
                 data.setPath("0_" + data.getCId());
-                DataBaseController.getInstanse().addCategoryDetails(context, data, new DataBaseCallBack() {
+                DataBaseController.getInstance().addCategoryDetails(context, data, new DataBaseCallBack() {
                     @Override
                     public void onSuccess(Object responseData, String successMsg) {
                         Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(AddCategoryFragment.class.getSimpleName());
@@ -47,7 +47,7 @@ public class AddNEditCategoryHandler {
                     }
                 });
             } else {
-                DataBaseController.getInstanse().updateCategory(context, data, new DataBaseCallBack() {
+                DataBaseController.getInstance().updateCategory(context, data, new DataBaseCallBack() {
                     @Override
                     public void onSuccess(Object responseData, String successMsg) {
                         Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(AddCategoryFragment.class.getSimpleName());
@@ -71,7 +71,7 @@ public class AddNEditCategoryHandler {
 
     public void delete(Category data) {
         if (data != null) {
-            DataBaseController.getInstanse().deleteCategory(context, data, new DataBaseCallBack() {
+            DataBaseController.getInstance().deleteCategory(context, data, new DataBaseCallBack() {
                 @Override
                 public void onSuccess(Object responseData, String successMsg) {
                     FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();

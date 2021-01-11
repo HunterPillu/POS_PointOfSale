@@ -66,7 +66,7 @@ public class CustomDialogClass extends Dialog implements
                     String date = simpleDateFormat.format(new Date());
                     cashDrawerModel.setDate(date);
                     AppSharedPref.setDate(context, date);
-                    DataBaseController.getInstanse().addOpeningBalance(context, cashDrawerModel);
+                    DataBaseController.getInstance().addOpeningBalance(context, cashDrawerModel);
                     findViewById(R.id.error_text).setVisibility(View.GONE);
                     dismiss();
                 } else {

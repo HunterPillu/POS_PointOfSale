@@ -37,7 +37,7 @@ public class TaxActivity extends BaseActivity {
     }
 
     public void setTax() {
-        DataBaseController.getInstanse().getAllTaxes(this, new DataBaseCallBack() {
+        DataBaseController.getInstance().getAllTaxes(this, new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String msg) {
                 if (!responseData.toString().equalsIgnoreCase("[]")) {

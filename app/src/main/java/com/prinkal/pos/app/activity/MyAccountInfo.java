@@ -24,7 +24,7 @@ public class MyAccountInfo extends BaseActivity {
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        DataBaseController.getInstanse().getAdminData(this, new DataBaseCallBack() {
+        DataBaseController.getInstance().getAdminData(this, new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String successMsg) {
                 binding.setData((Administrator) responseData);

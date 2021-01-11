@@ -20,7 +20,7 @@ public class MyAccountInfoHandler {
 
     public void onClickSubmit(Administrator administrator) {
         if (isFormValidated(administrator)) {
-            DataBaseController.getInstanse().updateAdmin(context, administrator, new DataBaseCallBack() {
+            DataBaseController.getInstance().updateAdmin(context, administrator, new DataBaseCallBack() {
                 @Override
                 public void onSuccess(Object responseData, String successMsg) {
                     ToastHelper.showToast(context, successMsg, Toast.LENGTH_LONG);

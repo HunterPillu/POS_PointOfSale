@@ -220,7 +220,7 @@ public class InventoryReportFragment extends Fragment {
     }
 
     private void setSalesProduct() {
-        DataBaseController.getInstanse().getOrders(getActivity(), new DataBaseCallBack() {
+        DataBaseController.getInstance().getOrders(getActivity(), new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String successMsg) {
                 for (OrderEntity orderEntity : (List<OrderEntity>) responseData) {

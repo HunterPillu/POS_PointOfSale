@@ -43,7 +43,7 @@ public class CategoryActivity extends BaseActivity {
     }
 
     public void setCategory() {
-        DataBaseController.getInstanse().getCategory(this, new DataBaseCallBack() {
+        DataBaseController.getInstance().getCategory(this, new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String msg) {
                 if (!responseData.toString().equalsIgnoreCase("[]")) {

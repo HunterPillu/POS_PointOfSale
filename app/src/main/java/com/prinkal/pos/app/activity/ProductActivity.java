@@ -45,7 +45,7 @@ public class ProductActivity extends BaseActivity {
     }
 
     public void setProduct() {
-        DataBaseController.getInstanse().getProducts(this, new DataBaseCallBack() {
+        DataBaseController.getInstance().getProducts(this, new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String msg) {
                 if (!responseData.toString().equalsIgnoreCase("[]")) {

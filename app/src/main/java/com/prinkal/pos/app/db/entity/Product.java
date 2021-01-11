@@ -196,7 +196,7 @@ public class Product extends BaseObservable implements Serializable, Parcelable 
             return "";
         else if (!sku.isEmpty()) {
             Log.d(TAG, "getsku: " + sku);
-            DataBaseController.getInstanse().checkSkuExist(getContext(), sku, new DataBaseCallBack() {
+            DataBaseController.getInstance().checkSkuExist(getContext(), sku, new DataBaseCallBack() {
                 @Override
                 public void onSuccess(Object responseData, String successMsg) {
                     if (responseData != null && ((Product) responseData).getPId() != getPId()) {

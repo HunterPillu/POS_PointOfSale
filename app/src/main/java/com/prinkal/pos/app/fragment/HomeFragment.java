@@ -96,7 +96,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void setProduct() {
-        DataBaseController.getInstanse().getAllEnabledProducts(getActivity(), new DataBaseCallBack() {
+        DataBaseController.getInstance().getAllEnabledProducts(getActivity(), new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String msg) {
                 if (!responseData.toString().equalsIgnoreCase("[]")) {
@@ -198,7 +198,7 @@ public class HomeFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 if (newText.length() > 0) {
                     newText = "%" + newText + "%";
-                    DataBaseController.getInstanse().getSearchData(getActivity(), newText, new DataBaseCallBack() {
+                    DataBaseController.getInstance().getSearchData(getActivity(), newText, new DataBaseCallBack() {
                         @Override
                         public void onSuccess(Object responseData, String successMsg) {
                             if (!(searchProduct.toString().equalsIgnoreCase(responseData.toString()))) {
@@ -247,7 +247,7 @@ public class HomeFragment extends Fragment {
                     Barcode barcode = intent.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
                     Point[] p = barcode.cornerPoints;
 
-                    DataBaseController.getInstanse().getProductByBarcode(getActivity(), barcode.displayValue, new DataBaseCallBack() {
+                    DataBaseController.getInstance().getProductByBarcode(getActivity(), barcode.displayValue, new DataBaseCallBack() {
                         @Override
                         public void onSuccess(Object responseData, String successMsg) {
                             binding.getHandler().onClickProduct((Product) responseData);

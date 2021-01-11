@@ -27,7 +27,7 @@ public class AddTaxFragmentHandler {
     public void save(Tax data, boolean isEdit) {
         if (isValidated(data)) {
             if (!isEdit) {
-                DataBaseController.getInstanse().addTaxRate(context, data, new DataBaseCallBack() {
+                DataBaseController.getInstance().addTaxRate(context, data, new DataBaseCallBack() {
                     @Override
                     public void onSuccess(Object responseData, String successMsg) {
                         Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(AddTaxFragment.class.getSimpleName());
@@ -45,7 +45,7 @@ public class AddTaxFragmentHandler {
                     }
                 });
             } else {
-                DataBaseController.getInstanse().updateTax(context, data, new DataBaseCallBack() {
+                DataBaseController.getInstance().updateTax(context, data, new DataBaseCallBack() {
                     @Override
                     public void onSuccess(Object responseData, String successMsg) {
                         Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(AddTaxFragment.class.getSimpleName());
@@ -69,7 +69,7 @@ public class AddTaxFragmentHandler {
 
     public void deleteTax(Tax data) {
         if (data != null) {
-            DataBaseController.getInstanse().deleteTax(context, data, new DataBaseCallBack() {
+            DataBaseController.getInstance().deleteTax(context, data, new DataBaseCallBack() {
                 @Override
                 public void onSuccess(Object responseData, String successMsg) {
                     FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();

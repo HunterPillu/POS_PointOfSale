@@ -58,7 +58,7 @@ public class HoldFragment extends Fragment {
     }
 
     void setHoldCartData() {
-        DataBaseController.getInstanse().getHoldCart(getActivity(), new DataBaseCallBack() {
+        DataBaseController.getInstance().getHoldCart(getActivity(), new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String successMsg) {
                 if (((List<HoldCart>) responseData).size() > 0) {

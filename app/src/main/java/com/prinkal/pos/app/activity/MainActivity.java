@@ -67,7 +67,7 @@ public class MainActivity extends BaseActivity {
         initDrawerToggle();
         initBottomNavView();
         loadHomeFragment();
-        DataBaseController.getInstanse().getCashHistoryByDate(this, Helper.getCurrentDate(), new DataBaseCallBack() {
+        DataBaseController.getInstance().getCashHistoryByDate(this, Helper.getCurrentDate(), new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String successMsg) {
             }
@@ -201,7 +201,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void setCategories() {
-        DataBaseController.getInstanse().getIncludedCategoryForDrawer(this, new DataBaseCallBack() {
+        DataBaseController.getInstance().getIncludedCategoryForDrawer(this, new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String msg) {
                 if (!(categories.toString().equalsIgnoreCase(responseData.toString()))) {

@@ -33,7 +33,7 @@ public class CashDrawerActivity extends BaseActivity {
     }
 
     public void setCashDrawerList() {
-        DataBaseController.getInstanse().getAllCashHistory(this, new DataBaseCallBack() {
+        DataBaseController.getInstance().getAllCashHistory(this, new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String msg) {
                 if (!responseData.toString().equalsIgnoreCase("[]")) {

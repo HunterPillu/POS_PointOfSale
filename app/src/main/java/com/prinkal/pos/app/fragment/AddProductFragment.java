@@ -103,7 +103,7 @@ public class AddProductFragment extends Fragment {
         setProductCategory();
         setProductOptions();
         binding.setEdit(isEdit);
-        DataBaseController.getInstanse().getAllEnabledTaxes(getActivity(), new DataBaseCallBack() {
+        DataBaseController.getInstance().getAllEnabledTaxes(getActivity(), new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String successMsg) {
                 if (!((List<Tax>) responseData).toString().equalsIgnoreCase("[]")) {

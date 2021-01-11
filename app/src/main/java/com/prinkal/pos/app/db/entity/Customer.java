@@ -98,7 +98,7 @@ public class Customer extends BaseObservable implements Serializable {
             return "";
         } else if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Log.d(TAG, "getEmail: " + getCustomerId());
-            DataBaseController.getInstanse().checkEmailExist(getContext(), email, new DataBaseCallBack() {
+            DataBaseController.getInstance().checkEmailExist(getContext(), email, new DataBaseCallBack() {
                 @Override
                 public void onSuccess(Object responseData, String successMsg) {
                     if (((Customer) responseData) != null && ((Customer) responseData).getCustomerId() != getCustomerId()) {
@@ -145,7 +145,7 @@ public class Customer extends BaseObservable implements Serializable {
             return "";
         else if (!contactNumber.isEmpty()) {
             Log.d(TAG, "getContactNumber: " + contactNumber);
-            DataBaseController.getInstanse().checkNumberExist(getContext(), contactNumber, new DataBaseCallBack() {
+            DataBaseController.getInstance().checkNumberExist(getContext(), contactNumber, new DataBaseCallBack() {
                 @Override
                 public void onSuccess(Object responseData, String successMsg) {
                     if (responseData != null && ((Customer) responseData).getCustomerId() != getCustomerId()) {
