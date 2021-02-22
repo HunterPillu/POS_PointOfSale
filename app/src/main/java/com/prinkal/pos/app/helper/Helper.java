@@ -270,7 +270,7 @@ public class Helper {
             document.open();
 
             //using add method in document to insert a paragraph
-            document.add(getParagraph("Prinkal Pos Invoice", mFBold14, PDF_ALIGNMENT_CENTER));
+            document.add(getParagraph("Cruzame Distributors Invoice", mFBold14, PDF_ALIGNMENT_CENTER));
             document.add(getParagraph("Order No.- " + orderEntity.getOrderId(), mFBold14, PDF_ALIGNMENT_CENTER));
             document.add(getParagraph("Order Details", mFBold14));
             document.add(getParagraph("Order ID - " + orderEntity.getOrderId(), mFBold12));

@@ -61,6 +61,17 @@ public class Customer extends BaseObservable implements Serializable {
     @Ignore
     private boolean isNumberExist;
 
+    @Ignore //@ColumnInfo(name = "u_id")
+    private String uId;
+
+    public String getUId() {
+        return uId;
+    }
+
+    public void setUId(String uId) {
+        this.uId = uId;
+    }
+
     public int getCustomerId() {
         return customerId;
     }

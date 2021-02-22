@@ -19,6 +19,7 @@ public class BundleConstants {
     public static String BUNDLE_BLOCK_NAME = "block_name";
     public static String BUNDLE_BLOCK_TYPE = "block_type";
     public static String BUNDLE_ORDER_DATA = "order_data";
+    public static String BUNDLE_CALLING_FRAGMENT = "calling_fragment";
 
     public enum EmptyLayoutType {
         PRODUCT, CATEGORY, ORDER, CART, WISHLIST, NOTIFICATION, CUSTOMER, HOLD, PAYMENT, CASHDRAWER, OPTIONS, TAX, LOW_STOCK

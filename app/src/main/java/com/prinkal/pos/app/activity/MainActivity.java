@@ -18,6 +18,7 @@ import com.prinkal.pos.app.R;
 import com.prinkal.pos.app.adapter.DrawerAdapter;
 import com.prinkal.pos.app.customviews.CustomDialogClass;
 import com.prinkal.pos.app.databinding.ActivityMainBinding;
+import com.prinkal.pos.app.db.CoroutinesAsyncTask;
 import com.prinkal.pos.app.db.DataBaseController;
 import com.prinkal.pos.app.db.entity.Category;
 import com.prinkal.pos.app.db.entity.Product;
@@ -29,6 +30,9 @@ import com.prinkal.pos.app.helper.AppSharedPref;
 import com.prinkal.pos.app.helper.Helper;
 import com.prinkal.pos.app.helper.ToastHelper;
 import com.prinkal.pos.app.interfaces.DataBaseCallBack;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -42,6 +46,7 @@ import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentTransaction;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import kotlin.coroutines.Continuation;
 
 import static com.prinkal.pos.app.constants.ApplicationConstants.IS_DEMO_USER_ENABLED;
 import static com.prinkal.pos.app.helper.Helper.DB_NAME;
@@ -129,29 +134,23 @@ public class MainActivity extends BaseActivity {
         getNetworkTime.execute();
     }
 
-    class GetNetworkTime extends AsyncTask<Void, Void,
-            Long> {
+    class GetNetworkTime extends CoroutinesAsyncTask<Void, Void,
+                Long> {
 
-        private Context context;
+        private final Context context;
 
         GetNetworkTime(Context context) {
             this.context = context;
         }
 
         @Override
-        protected void onPreExecute() {
+        public void onPreExecute() {
             super.onPreExecute();
             showLoader();
         }
 
         @Override
-        protected Long doInBackground(Void... voids) {
-            networkTS = Helper.getCurrentNetworkTime();
-            return networkTS;
-        }
-
-        @Override
-        protected void onPostExecute(Long l) {
+        public void onPostExecute(Long l) {
             super.onPostExecute(l);
             hideLoader();
             storedTime = AppSharedPref.getTime(context, 0);
@@ -163,6 +162,13 @@ public class MainActivity extends BaseActivity {
                     destoryDbForDemoUser();
                 }
             }
+        }
+
+        @Nullable
+        @Override
+        public Object doInBackground(@NotNull Void[] voids, @NotNull Continuation<? super Long> $completion) {
+            networkTS = Helper.getCurrentNetworkTime();
+            return networkTS;
         }
     }
 

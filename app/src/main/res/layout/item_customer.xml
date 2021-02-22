@@ -70,7 +70,7 @@
             android:layout_centerVertical="true"
             android:layout_gravity="end|center"
             android:layout_margin="@dimen/spacing_normal"
-            app:srcCompat="@drawable/ic_submit_fill" />
+            app:srcCompat="@drawable/ic_submit_fill_primary" />
 
         <View
             android:layout_width="match_parent"

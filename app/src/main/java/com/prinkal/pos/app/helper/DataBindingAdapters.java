@@ -35,13 +35,13 @@ public class DataBindingAdapters {
             try {
                 Glide.with(view.getContext())
                         .load(imageUrl)
-//                    .error(R.drawable.ic_error)
+                        .error(R.drawable.ic_product_placeholder)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .dontAnimate()
                         .into(view);
             } catch (Exception e) {
-                view.setImageResource(R.drawable.ic_error);
+                view.setImageResource(R.drawable.ic_product_placeholder);
             }
         } else {
             view.setImageResource(R.drawable.ic_product_placeholder);

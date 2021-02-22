@@ -39,15 +39,25 @@
 
     <!-- Default Button Style -->
     <style name="DefaultButtonStyle" parent="@android:style/Widget.Button">
-        <item name="android:background">
-            @drawable/selector_rect_rounded_corner_accent_bg_accent_stroke
-        </item>
+
         <item name="android:foreground">?attr/selectableItemBackground</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:padding">@dimen/spacing_normal</item>
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:gravity">center</item>
     </style>
+
+    <!--<style name="ActionModeStyle">
+        <item name="android:background">?android:attr/actionModeBackground</item>
+        <item name="android:backgroundSplit">?android:attr/actionModeSplitBackground</item>
+        <item name="android:height">?android:attr/actionBarSize</item>
+        <item name="android:titleTextStyle">@android:style/TextAppearance.Widget.ActionMode.Title</item>
+        <item name="android:subtitleTextStyle">@android:style/TextAppearance.Widget.ActionMode.Subtitle</item>
+    </style>-->
+
+   <!--prinkal <item name="android:background">
+        @drawable/selector_rect_rounded_corner_accent_bg_accent_stroke
+    </item>-->
 
     <style name="DefaultTextStyle" parent="@android:style/Widget.TextView">
         <item name="android:textColor">@color/textColor</item>

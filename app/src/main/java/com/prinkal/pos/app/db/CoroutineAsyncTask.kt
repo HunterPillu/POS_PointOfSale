@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 abstract class CoroutinesAsyncTask<Params, Progress, Result>{
 
     var status: BundleConstants.Status = BundleConstants.Status.PENDING
-    abstract fun doInBackground(vararg params: Params): Result
+    abstract suspend fun doInBackground(vararg params: Params): Result
     open fun onProgressUpdate(vararg values: Progress?) {}
     open fun onPostExecute(result: Result?) {}
     open fun onPreExecute() {}

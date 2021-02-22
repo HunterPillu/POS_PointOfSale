@@ -5,6 +5,7 @@ import com.prinkal.pos.app.model.CartModel;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -27,6 +28,17 @@ public class HoldCart {
 
     @ColumnInfo(name = "is_synced")
     private String isSynced;
+
+    @Ignore //@ColumnInfo(name = "u_id")
+    private String uId;
+
+    public String getUId() {
+        return uId;
+    }
+
+    public void setUId(String uId) {
+        this.uId = uId;
+    }
 
     public String getIsSynced() {
         return isSynced;

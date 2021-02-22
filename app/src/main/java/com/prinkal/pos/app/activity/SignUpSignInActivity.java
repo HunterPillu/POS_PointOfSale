@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import static com.prinkal.pos.app.constants.ApplicationConstants.DEFAULT_BACK_PRESSED_TIME_TO_CLOSE;
+import static com.prinkal.pos.app.constants.BundleConstants.BUNDLE_CALLING_FRAGMENT;
 
 public class SignUpSignInActivity extends BaseActivity {
 
@@ -25,13 +26,14 @@ public class SignUpSignInActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // AppSharedPref.removeAllPref(this);
+        // AppSharedPref.removeAllPref(this);
         mBinding = DataBindingUtil.setContentView(SignUpSignInActivity.this, R.layout.activity_sign_up_sign_in);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
         Fragment fragment;
         if (!AppSharedPref.isSignedUp(this, false)) {
+        //if ("sign_up".equals(getIntent().getStringExtra(BUNDLE_CALLING_FRAGMENT))) {
             fragment = new SignUpFragment();
         } else {
             fragment = new SignInFragment();

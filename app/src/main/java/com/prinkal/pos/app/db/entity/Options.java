@@ -35,6 +35,17 @@ public class Options extends BaseObservable implements Serializable {
     @Ignore
     private boolean displayError;
 
+    @Ignore //@ColumnInfo(name = "u_id")
+    private String uId;
+
+    public String getUId() {
+        return uId;
+    }
+
+    public void setUId(String uId) {
+        this.uId = uId;
+    }
+
     public int getOptionId() {
         return optionId;
     }

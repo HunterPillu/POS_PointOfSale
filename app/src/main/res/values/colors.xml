@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FF7852</color>
-    <color name="colorPrimaryDark">#ff5f33</color>
-    <color name="colorAccent">#FF7852</color>
+    <color name="colorPrimary">#388E3C</color>
+    <color name="colorPrimaryDark">#388E3C</color>
+    <color name="colorAccent">#388E3C</color>
     <color name="gray">#626262</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
@@ -11,10 +11,13 @@
     <color name="actionBarItemColor">@color/white</color>
     <color name="bottomNavBarItemColor">@color/white</color>
 
+    <color name="tabSelectedTextColor">#ffffff</color>
+    <color name="tabTextColor">#67ffffff</color>
+
     <!--some view's colors-->
     <color name="buttonBackgroundColor">@color/colorPrimary</color>
     <color name="buttonBackgroundColorDark">#e63200</color>
-    <color name="toastTextColor">@color/colorAccent</color>
+    <color name="toastTextColor">@color/white</color>
 
     <!--text colors-->
     <color name="textColor">#DB000000</color>
@@ -35,6 +38,7 @@
     <color name="custom_dialog_success_icon_background_color">#00ff00</color>
     <color name="custom_dialog_warning_icon_background_color">#ff9600</color>
     <color name="test">#ffe732</color>
+
 
 
 </resources>

@@ -7,10 +7,6 @@ import com.prinkal.pos.app.constants.ApplicationConstants
 import com.prinkal.pos.app.db.converters.DataConverter
 import com.prinkal.pos.app.db.entity.*
 import com.prinkal.pos.app.interfaces.DataBaseCallBack
-import com.prinkal.pos.app.model.ApiResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class DataBaseAsyncUtils {
 
@@ -27,7 +23,7 @@ class DataBaseAsyncUtils {
     }
 
     internal inner class GetAdminByEmailAsyncTask(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Administrator, Void?, Administrator?>() {
-        override fun doInBackground(vararg params: Administrator): Administrator? {
+        override suspend fun doInBackground(vararg params: Administrator): Administrator? {
             val administrator: Administrator
             administrator = try {
                 db.administratorDao().findByEmail(params[0].email, params[0].password)
@@ -46,7 +42,7 @@ class DataBaseAsyncUtils {
     }
 
     internal inner class GetAllAdminAsyncTask(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Void?, Void?, Administrator?>() {
-        override fun doInBackground(vararg params: Void?): Administrator? {
+        override suspend fun doInBackground(vararg params: Void?): Administrator? {
             val administrator: Administrator
             administrator = try {
                 db.administratorDao().all
@@ -64,10 +60,14 @@ class DataBaseAsyncUtils {
     }
 
     inner class AddAdminAsyncTask(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Administrator, Void?, Boolean?>() {
-        override fun doInBackground(vararg params: Administrator): Boolean {
+        override suspend fun doInBackground(vararg params: Administrator): Boolean {
             try {
                 db.administratorDao().insertAll(*params)
-                ApiUtils.aPIService.createUser(params[0]).enqueue(object : Callback<ApiResponse?> {
+                val response = ApiUtils.aPIService.createUser(params[0])
+                if (null != response) {
+                    Log.d("APIResponse", response.toString())
+                }
+                /*object : Callback<ApiResponse?> {
                     override fun onResponse(call: Call<ApiResponse?>, response: Response<ApiResponse?>) {
                         if (null != response.body()) {
                             Log.d("APIResponse", response.body().toString())
@@ -80,7 +80,7 @@ class DataBaseAsyncUtils {
                         Log.d("APIResponse", "onFailure")
                         t.printStackTrace()
                     }
-                })
+                })*/
             } catch (e: Exception) {
                 e.printStackTrace()
                 return false
@@ -97,7 +97,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class UpdateAdmin(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Administrator, Void?, Boolean?>() {
-        override fun doInBackground(vararg params: Administrator): Boolean {
+        override suspend fun doInBackground(vararg params: Administrator): Boolean {
             try {
                 db.administratorDao().updateAdminById(params[0].firstName, params[0].lastName, params[0].username, params[0].uid)
             } catch (e: Exception) {
@@ -116,7 +116,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class AddCategoryAsyncTask(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Category, Void?, Boolean?>() {
-        override fun doInBackground(vararg params: Category): Boolean {
+        override suspend fun doInBackground(vararg params: Category): Boolean {
             try {
                 db.categoryDao().insertAll(*params)
             } catch (e: Exception) {
@@ -134,7 +134,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class GetCategoryAsyncTask(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Void?, Void?, List<Category?>?>() {
-        override fun doInBackground(vararg params: Void?): List<Category> {
+        override suspend fun doInBackground(vararg params: Void?): List<Category> {
             return db.categoryDao().all
         }
 
@@ -147,7 +147,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class GetDrawerIncludedCategories(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Void?, Void?, List<Category?>?>() {
-        override fun doInBackground(vararg params: Void?): List<Category> {
+        override suspend fun doInBackground(vararg params: Void?): List<Category> {
             return db.categoryDao().getCategoryIncludedInDrawerMenu(true, true)
         }
 
@@ -160,7 +160,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class UpdateCategoryById(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Category, Void?, Boolean?>() {
-        override fun doInBackground(vararg params: Category): Boolean {
+        override suspend fun doInBackground(vararg params: Category): Boolean {
             try {
                 db.categoryDao().updateCategoryById(params[0].categoryName, params[0].isActive, params[0].isIncludeInDrawerMenu, params[0].cId)
             } catch (e: Exception) {
@@ -181,7 +181,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class DeleteCategoryById(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Category, Void?, Boolean?>() {
-        override fun doInBackground(vararg params: Category): Boolean {
+        override suspend fun doInBackground(vararg params: Category): Boolean {
             try {
                 db.categoryDao().delete(params[0])
             } catch (e: Exception) {
@@ -203,7 +203,7 @@ class DataBaseAsyncUtils {
 
     inner class AddProductAsyncTask(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Product, Void?, Long?>() {
 
-        override fun doInBackground(vararg params: Product): Long {
+        override suspend fun doInBackground(vararg params: Product): Long {
             val id: LongArray
             id = try {
                 db.productDao().insertAll(*params)
@@ -223,7 +223,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class UpdateProductImages(private val db: AppDatabase, private val imagePath: String, private val pId: Long, private val callBack: DataBaseCallBack) : CoroutinesAsyncTask<Void?, Void?, Boolean?>() {
-        override fun doInBackground(vararg params: Void?): Boolean {
+        override suspend fun doInBackground(vararg params: Void?): Boolean {
             try {
                 db.productDao().updateProductImages(imagePath, pId)
             } catch (e: Exception) {
@@ -240,7 +240,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class GetAllProducts(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Void?, Void?, List<Product?>?>() {
-        override fun doInBackground(vararg params: Void?): List<Product> {
+        override suspend fun doInBackground(vararg params: Void?): List<Product> {
             return db.productDao().all
         }
 
@@ -253,7 +253,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class GetAllEnabledProducts(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Void?, Void?, List<Product?>?>() {
-        override fun doInBackground(vararg params: Void?): List<Product> {
+        override suspend fun doInBackground(vararg params: Void?): List<Product> {
             return db.productDao().getEnabledProduct(true)
         }
 
@@ -274,17 +274,17 @@ class DataBaseAsyncUtils {
             } else dataBaseCallBack.onFailure(ApplicationConstants.ERROR_CODE, ApplicationConstants.ERROR_MSG)
         }
 
-        /*override fun doInBackground(vararg params: Int): List<Product?>? {
+        /*override suspend fun doInBackground(vararg params: Int): List<Product?>? {
             return db.productDao().getLowStockProducts(params[0])
         }*/
 
-        override fun doInBackground(vararg params: Int?): List<Product> {
+        override suspend fun doInBackground(vararg params: Int?): List<Product> {
             return db.productDao().getLowStockProducts(params[0]!!)
         }
     }
 
     inner class UpdateProduct(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Product, Void?, Boolean?>() {
-        override fun doInBackground(vararg params: Product): Boolean {
+        override suspend fun doInBackground(vararg params: Product): Boolean {
             try {
                 db.productDao().updateProduct(params[0].image, params[0].isEnabled, params[0].productName, params[0].sku, params[0].price, params[0].specialPrice, params[0].isTaxableGoodsApplied, params[0].isTrackInventory, params[0].quantity, params[0].isStock, params[0].weight, DataConverter().fromProductCategoriesList(params[0].productCategories), DataConverter().fromOptionList(params[0].options), DataConverter().fromTaxModelToString(params[0].productTax), params[0].pId)
             } catch (e: Exception) {
@@ -305,7 +305,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class UpdateProductQty(private val db: AppDatabase) : CoroutinesAsyncTask<Product, Void?, Boolean?>() {
-        override fun doInBackground(vararg params: Product): Boolean {
+        override suspend fun doInBackground(vararg params: Product): Boolean {
             try {
 //                Log.d(TAG, "doInBackground: qty" + Integer.parseInt(products[0].getQuantity()) + "---" + Integer.parseInt(products[0].getCartQty()));
 //                if (!AppSharedPref.isReturnCart(context))
@@ -322,7 +322,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class DeleteProduct(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Product, Void?, Boolean?>() {
-        override fun doInBackground(vararg params: Product): Boolean {
+        override suspend fun doInBackground(vararg params: Product): Boolean {
             try {
                 db.productDao().delete(params[0])
             } catch (e: Exception) {
@@ -343,14 +343,14 @@ class DataBaseAsyncUtils {
     }
 
     inner class CheckSkuExist(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<String, Void?, Product?>() {
-        override fun doInBackground(vararg params: String): Product {
+        override suspend fun doInBackground(vararg params: String): Product? {
             var product: Product? = null
             try {
                 product = db.productDao().checkSkuExist(params[0])
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            return product!!
+            return product
         }
 
         override fun onPostExecute(result: Product?) {
@@ -364,7 +364,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class GetAllCustomers(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Void?, Void?, List<Customer?>?>() {
-        override fun doInBackground(vararg params: Void?): List<Customer> {
+        override suspend fun doInBackground(vararg params: Void?): List<Customer>? {
             return db.customerDao().all
         }
 
@@ -379,7 +379,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class AddCustomerAsyncTask(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Customer, Void?, Boolean?>() {
-        override fun doInBackground(vararg params: Customer): Boolean {
+        override suspend fun doInBackground(vararg params: Customer): Boolean {
             try {
                 db.customerDao().insertAll(params[0])
             } catch (e: Exception) {
@@ -398,7 +398,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class UpdateCustomerAsyncTask(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Customer, Void?, Boolean?>() {
-        override fun doInBackground(vararg params: Customer): Boolean {
+        override suspend fun doInBackground(vararg params: Customer): Boolean {
             try {
                 db.customerDao().updateCustomerById(params[0].firstName, params[0].lastName, params[0].email, params[0].contactNumber, params[0].addressLine, params[0].city, params[0].postalCode, params[0].state, params[0].country, params[0].customerId)
             } catch (e: Exception) {
@@ -417,7 +417,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class DeleteCustomer(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Customer, Void?, Boolean?>() {
-        override fun doInBackground(vararg params: Customer): Boolean {
+        override suspend fun doInBackground(vararg params: Customer): Boolean {
             try {
                 db.customerDao().delete(params[0])
             } catch (e: Exception) {
@@ -438,7 +438,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class CheckEmailExist(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<String, Void?, Customer?>() {
-        override fun doInBackground(vararg params: String): Customer? {
+        override suspend fun doInBackground(vararg params: String): Customer? {
             val customer: Customer
             customer = try {
                 db.customerDao().checkEmailExist(params[0])
@@ -460,14 +460,14 @@ class DataBaseAsyncUtils {
     }
 
     inner class CheckNumberExist(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<String, Void?, Customer?>() {
-        override fun doInBackground(vararg params: String): Customer {
+        override suspend fun doInBackground(vararg params: String): Customer? {
             var customer: Customer? = null
             try {
                 customer = db.customerDao().checkNumberExist(params[0])
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            return customer!!
+            return customer
         }
 
         override fun onPostExecute(result: Customer?) {
@@ -481,7 +481,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class GenerateOrderAsyncTask(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<OrderEntity, Void?, Long?>() {
-        override fun doInBackground(vararg params: OrderEntity): Long {
+        override suspend fun doInBackground(vararg params: OrderEntity): Long {
             val id: LongArray
             try {
                 id = db.orderDao().insertAll(params[0])
@@ -502,7 +502,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class UpdateRefundedOrderId(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack, private val returnedOrderId: String, private val currentOrderId: String) : CoroutinesAsyncTask<Void?, Void?, Boolean?>() {
-        override fun doInBackground(vararg params: Void?): Boolean {
+        override suspend fun doInBackground(vararg params: Void?): Boolean {
             try {
                 db.orderDao().updateRefundedOrderId(currentOrderId, returnedOrderId.toInt() - 10000)
             } catch (e: Exception) {
@@ -521,7 +521,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class GetOrders(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Void?, Void?, List<OrderEntity?>?>() {
-        override fun doInBackground(vararg params: Void?): List<OrderEntity> {
+        override suspend fun doInBackground(vararg params: Void?): List<OrderEntity>? {
             return db.orderDao().all
         }
 
@@ -534,7 +534,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class GetOrdersById(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<String, Void?, OrderEntity?>() {
-        override fun doInBackground(vararg params: String): OrderEntity {
+        override suspend fun doInBackground(vararg params: String): OrderEntity? {
             return db.orderDao().loadByIds(params[0].toInt())
         }
 
@@ -547,7 +547,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class GetSearchData(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<String, Void?, List<Product?>?>() {
-        override fun doInBackground(vararg params: String): List<Product> {
+        override suspend fun doInBackground(vararg params: String): List<Product>? {
             return db.productDao().getSearchData(params[0])
         }
 
@@ -560,7 +560,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class GetSearchOrders(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<String, Void?, List<OrderEntity?>?>() {
-        override fun doInBackground(vararg params: String): List<OrderEntity> {
+        override suspend fun doInBackground(vararg params: String): List<OrderEntity>? {
             return db.orderDao().getSearchOrders(params[0])
         }
 
@@ -573,7 +573,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class DeleteAllTables(private val db: AppDatabase) : CoroutinesAsyncTask<Void?, Void?, Void?>() {
-        override fun doInBackground(vararg params: Void?): Void? {
+        override suspend fun doInBackground(vararg params: Void?): Void? {
             db.orderDao().delete()
             db.productDao().delete()
             db.categoryDao().delete()
@@ -587,7 +587,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class AddCartDataToHoldCart(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<HoldCart, Void?, Long?>() {
-        override fun doInBackground(vararg params: HoldCart): Long {
+        override suspend fun doInBackground(vararg params: HoldCart): Long {
             val id: LongArray
             try {
                 id = db.holdCartDao().insertAll(params[0])
@@ -608,7 +608,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class GetHoldCartData(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Void?, Void?, List<HoldCart?>?>() {
-        override fun doInBackground(vararg params: Void?): List<HoldCart> {
+        override suspend fun doInBackground(vararg params: Void?): List<HoldCart>? {
             return db.holdCartDao().all
         }
 
@@ -621,7 +621,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class DeleteHoldCartById(private val db: AppDatabase) : CoroutinesAsyncTask<HoldCart, Void?, Boolean?>() {
-        override fun doInBackground(vararg params: HoldCart): Boolean {
+        override suspend fun doInBackground(vararg params: HoldCart): Boolean {
             try {
                 db.holdCartDao().delete(params[0].holdCartId - 12000)
             } catch (e: Exception) {
@@ -634,7 +634,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class GetProductByBarcode(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<String, Void?, Product?>() {
-        override fun doInBackground(vararg params: String): Product {
+        override suspend fun doInBackground(vararg params: String): Product? {
             return db.productDao().getProductByBarcode(params[0])
         }
 
@@ -647,7 +647,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class AddCashDrawerData(private val db: AppDatabase) : CoroutinesAsyncTask<CashDrawerModel, Void?, Void?>() {
-        override fun doInBackground(vararg params: CashDrawerModel): Void? {
+        override suspend fun doInBackground(vararg params: CashDrawerModel): Void? {
             try {
                 db.cashDrawerDao().insertAll(params[0])
             } catch (e: Exception) {
@@ -658,7 +658,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class UpdateCashData(private val db: AppDatabase, private val callBack: DataBaseCallBack) : CoroutinesAsyncTask<CashDrawerModel, Void?, Boolean?>() {
-        override fun doInBackground(vararg params: CashDrawerModel): Boolean {
+        override suspend fun doInBackground(vararg params: CashDrawerModel): Boolean {
             try {
                 val converter = DataConverter()
                 db.cashDrawerDao().updateCashDrawerModelByDate(params[0].closingBalance, params[0].netRevenue, params[0].inAmount, params[0].outAmount, converter.fromCashDrawerItemToString(params[0].cashDrawerItems), params[0].formattedClosingBalance, params[0].formattedNetRevenue, params[0].formattedInAmount, params[0].formattedOutAmount, params[0].date)
@@ -680,7 +680,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class GetCashDrawerDataByDate(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<String, Void?, CashDrawerModel?>() {
-        override fun doInBackground(vararg params: String): CashDrawerModel {
+        override suspend fun doInBackground(vararg params: String): CashDrawerModel? {
             return db.cashDrawerDao().loadAllByDate(params[0])
         }
 
@@ -693,7 +693,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class GetAllCashDrawerData(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Void?, Void?, List<CashDrawerModel?>?>() {
-        override fun doInBackground(vararg params: Void?): List<CashDrawerModel> {
+        override suspend fun doInBackground(vararg params: Void?): List<CashDrawerModel>? {
             return db.cashDrawerDao().all
         }
 
@@ -706,7 +706,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class AddOptions(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Options, Void?, Long?>() {
-        override fun doInBackground(vararg params: Options): Long {
+        override suspend fun doInBackground(vararg params: Options): Long {
             val id = db.optionDao().insertAll(*params)
             return id[0]
         }
@@ -720,7 +720,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class GetOptions(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Void?, Void?, List<Options?>?>() {
-        override fun doInBackground(vararg params: Void?): List<Options> {
+        override suspend fun doInBackground(vararg params: Void?): List<Options>? {
             return db.optionDao().all
         }
 
@@ -733,7 +733,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class UpdateOptions(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Options, Void?, Boolean?>() {
-        override fun doInBackground(vararg params: Options): Boolean {
+        override suspend fun doInBackground(vararg params: Options): Boolean {
             try {
                 db.optionDao().updateOptionsById(params[0].optionName, params[0].type, DataConverter().fromOptionValuesList(params[0].optionValues), params[0].optionId)
             } catch (e: Exception) {
@@ -754,7 +754,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class DeleteOption(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Options, Void?, Boolean?>() {
-        override fun doInBackground(vararg params: Options): Boolean {
+        override suspend fun doInBackground(vararg params: Options): Boolean {
             try {
                 db.optionDao().delete(params[0])
             } catch (e: Exception) {
@@ -775,7 +775,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class AddTaxRate(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Tax, Void?, Long?>() {
-        override fun doInBackground(vararg params: Tax): Long {
+        override suspend fun doInBackground(vararg params: Tax): Long {
             val id = db.taxDao().insertAll(*params)
             return id[0]
         }
@@ -789,7 +789,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class GetAllTaxes(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Void?, Void?, List<Tax?>?>() {
-        override fun doInBackground(vararg params: Void?): List<Tax> {
+        override suspend fun doInBackground(vararg params: Void?): List<Tax>? {
             return db.taxDao().all
         }
 
@@ -802,7 +802,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class UpdateTaxRate(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Tax, Void?, Boolean?>() {
-        override fun doInBackground(vararg params: Tax): Boolean {
+        override suspend fun doInBackground(vararg params: Tax): Boolean {
             try {
                 db.taxDao().updateTaxById(params[0].taxName, params[0].isEnabled, params[0].taxRate, params[0].taxId)
             } catch (e: Exception) {
@@ -821,7 +821,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class GetAllEnabledTaxes(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Void?, Void?, List<Tax?>?>() {
-        override fun doInBackground(vararg params: Void?): List<Tax> {
+        override suspend fun doInBackground(vararg params: Void?): List<Tax> {
             return db.taxDao().getEnabledTax(true)
         }
 
@@ -834,7 +834,7 @@ class DataBaseAsyncUtils {
     }
 
     inner class DeleteTax(private val db: AppDatabase, private val dataBaseCallBack: DataBaseCallBack) : CoroutinesAsyncTask<Tax, Void?, Boolean?>() {
-        override fun doInBackground(vararg params: Tax): Boolean {
+        override suspend fun doInBackground(vararg params: Tax): Boolean {
             try {
                 db.taxDao().delete(params[0])
             } catch (e: Exception) {

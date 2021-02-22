@@ -27,7 +27,6 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.squareup.timessquare.CalendarPickerView;
 import com.prinkal.pos.app.R;
 import com.prinkal.pos.app.activity.SalesReportProductAdapter;
 import com.prinkal.pos.app.databinding.FragmentInventoryReportBinding;
@@ -38,6 +37,7 @@ import com.prinkal.pos.app.db.entity.Product;
 import com.prinkal.pos.app.helper.Helper;
 import com.prinkal.pos.app.interfaces.DataBaseCallBack;
 import com.prinkal.pos.app.model.SalesProductReportModel;
+import com.squareup.timessquare.CalendarPickerView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -242,7 +242,7 @@ public class InventoryReportFragment extends Fragment {
                                 for (OptionValues optionValues : product.getOptions().get(i).getOptionValues()) {
                                     if (optionValues.isAddToCart()) {
                                         if (!optionValues.getOptionValuePrice().isEmpty())
-                                            price = price + Integer.parseInt(optionValues.getOptionValuePrice());
+                                            price = price + Double.parseDouble(optionValues.getOptionValuePrice());
                                     }
                                 }
                         }

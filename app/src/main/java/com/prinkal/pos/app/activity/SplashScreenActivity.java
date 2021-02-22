@@ -19,6 +19,7 @@ import com.prinkal.pos.app.helper.Helper;
 import androidx.appcompat.app.AppCompatActivity;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
+import static com.prinkal.pos.app.constants.BundleConstants.BUNDLE_CALLING_FRAGMENT;
 import static com.prinkal.pos.app.helper.Helper.DB_NAME;
 import static com.prinkal.pos.app.helper.Helper.DB_PATH;
 
@@ -45,8 +46,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         // README for more information.
         // [START enable_dev_mode]
         ///FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                //.setDeveloperModeEnabled(BuildConfig.DEBUG)
-                ///.build();
+        //.setDeveloperModeEnabled(BuildConfig.DEBUG)
+        ///.build();
         ///mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
         // [END enable_dev_mode]
 
@@ -55,7 +56,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         // want to change in the Firebase console. See Best Practices in the README for more
         // information.
         // [START set_default_values]
-       /// mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
+        /// mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
         // [END set_default_values]
     }
 
@@ -124,15 +125,15 @@ public class SplashScreenActivity extends AppCompatActivity {
         } catch (SQLiteException e) {
             Log.d(TAG, "checkDataBase: SQLiteException---" + e);
             e.printStackTrace();
-            //Helper.setDefaultDataBase(this);
+            Helper.setDefaultDataBase(this);
             //prinkal
-            //AppSharedPref.setSignedUp(this, true);
+            AppSharedPref.setSignedUp(this, true);
         } catch (Exception e) {
             Log.d(TAG, "checkDataBase: Exception " + e);
             e.printStackTrace();
-            //Helper.setDefaultDataBase(this);
+            Helper.setDefaultDataBase(this);
             //prinkal
-            //AppSharedPref.setSignedUp(this, true);
+            AppSharedPref.setSignedUp(this, true);
         }
         return checkDB != null;
     }
@@ -198,6 +199,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     SplashScreenActivity.this.finish();
                 } else {
                     Intent i = new Intent(SplashScreenActivity.this, SignUpSignInActivity.class);
+                    //i.putExtra(BUNDLE_CALLING_FRAGMENT, "sign_in");
                     startActivity(i);
                     SplashScreenActivity.this.finish();
                 }

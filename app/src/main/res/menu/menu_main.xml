@@ -7,7 +7,7 @@
     <item
         android:id="@+id/menu_item_search"
         android:icon="@drawable/ic_vector_menu_search"
-        android:textColorHint="@color/colorAccent"
+        android:textColorHint="@color/actionBarItemColor"
         android:title="@string/search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always" />
@@ -16,7 +16,7 @@
         android:id="@+id/menu_item_scan_barcode"
         android:icon="@drawable/ic_vector_menu_scan_barcode"
         android:title="@string/scan_barcode"
-        android:visible="true"
+        android:visible="false"
         app:showAsAction="always" />
 
 </menu>

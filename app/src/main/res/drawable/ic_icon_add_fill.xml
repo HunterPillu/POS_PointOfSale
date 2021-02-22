@@ -7,6 +7,6 @@
         android:pathData="M20,13l-7,0l0,7l-2,0l0,-7l-7,0l0,-2l7,0l0,-7l2,0l0,7l7,0z"
         android:strokeColor="#00000000"
         android:fillType="evenOdd"
-        android:fillColor="#FF7852"
+        android:fillColor="@color/actionBarItemColor"
         android:strokeWidth="1"/>
 </vector>

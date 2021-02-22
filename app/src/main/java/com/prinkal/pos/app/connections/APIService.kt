@@ -17,5 +17,5 @@ interface APIService {
     ): Call<OpenExchangeRate?>?
 
     @POST("user")
-    fun createUser(@Body user: Administrator?): Call<ApiResponse?>
+    suspend fun createUser(@Body user: Administrator?): ApiResponse?
 }

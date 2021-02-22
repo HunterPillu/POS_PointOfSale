@@ -30,9 +30,11 @@ import static com.prinkal.pos.app.constants.ApplicationConstants.MORE_MENU_MY_AC
 import static com.prinkal.pos.app.constants.ApplicationConstants.MORE_MENU_OPTIONS;
 import static com.prinkal.pos.app.constants.ApplicationConstants.MORE_MENU_OTHERS;
 import static com.prinkal.pos.app.constants.ApplicationConstants.MORE_MENU_PAYMENT_METHODS;
+import static com.prinkal.pos.app.constants.ApplicationConstants.MORE_MENU_POS_USERS;
 import static com.prinkal.pos.app.constants.ApplicationConstants.MORE_MENU_PRODUCTS;
 import static com.prinkal.pos.app.constants.ApplicationConstants.MORE_MENU_SALES_AND_REPORTING;
 import static com.prinkal.pos.app.constants.ApplicationConstants.MORE_MENU_TAXES;
+import static com.prinkal.pos.app.constants.BundleConstants.BUNDLE_CALLING_FRAGMENT;
 import static com.prinkal.pos.app.helper.AppSharedPref.USER_PREF;
 
 public class MoreFragmentHandler {
@@ -86,6 +88,10 @@ public class MoreFragmentHandler {
                 i = new Intent(context, OtherActivity.class);
                 context.startActivity(i);
                 break;
+//            case MORE_MENU_POS_USERS:
+//                i = new Intent(context, PaymentMethodActivity.class);
+//                context.startActivity(i);
+//                break;
             default:
                 ToastHelper.showToast(context, "THIS OPTION IS UNDER DEVELOPMENT MODE!!", Toast.LENGTH_LONG);
         }
@@ -104,6 +110,7 @@ public class MoreFragmentHandler {
                         AppSharedPref.removeAllPref(context);
                         //AppSharedPref.getSharedPreferenceEditor(context, USER_PREF).clear().apply();
                         Intent i = new Intent(context, SignUpSignInActivity.class);
+                        i.putExtra(BUNDLE_CALLING_FRAGMENT, "sign_in");
                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(i);
                         ((MainActivity) context).finish();

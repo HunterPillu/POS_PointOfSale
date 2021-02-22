@@ -9,6 +9,8 @@ import com.prinkal.pos.app.db.entity.Options;
 import com.prinkal.pos.app.db.entity.Product;
 import com.prinkal.pos.app.handlers.ManageOptionFragmentHandler;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +27,7 @@ public class ManageOptionsAdapter extends RecyclerView.Adapter<ManageOptionsAdap
         this.product = product;
     }
 
+    @NotNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater =

@@ -56,7 +56,7 @@
             android:layout_marginEnd="@dimen/spacing_normal"
             android:layout_marginRight="@dimen/spacing_normal"
             android:visibility="@{data.isSelected ? View.VISIBLE : View.GONE}"
-            app:srcCompat="@drawable/ic_submit_fill" />
+            app:srcCompat="@drawable/ic_submit_fill_primary" />
 
         <View
             android:layout_width="match_parent"

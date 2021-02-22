@@ -162,8 +162,8 @@ public class CartHandler {
                 for (OptionValues optionValues : product.getOptions().get(i).getOptionValues()) {
                     if (optionValues.isAddToCart()) {
                         if (!optionValues.getOptionValuePrice().isEmpty()) {
-                            price = price + Integer.parseInt(optionValues.getOptionValuePrice());
-                            basePrice = basePrice + Integer.parseInt(optionValues.getOptionValuePrice());
+                            price = price + Double.parseDouble(optionValues.getOptionValuePrice());
+                            basePrice = basePrice + Double.parseDouble(optionValues.getOptionValuePrice());
                         }
                     }
                 }

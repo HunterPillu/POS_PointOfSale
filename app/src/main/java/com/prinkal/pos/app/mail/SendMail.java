@@ -49,7 +49,7 @@ public class SendMail extends AsyncTask<Void, Integer, Boolean> {
         String[] toArr = {orderData.getCartData().getCustomer().getEmail()};
         m.setTo(toArr);
         m.setFrom(ApplicationConstants.USERNAME_FOR_SMTP);
-        m.setSubject("Prinkal POS - Order " + orderData.getOrderId());
+        m.setSubject("Cruzame Distributors - Order " + orderData.getOrderId());
         m.setBody("Thank you for choosing " + context.getString(R.string.app_name) + ". Your order has been completed.\n" +
                 "\n" +
                 "To view your order, open your " + invoiceFile.getName() + ", which is attached here.");

@@ -9,6 +9,8 @@ import com.prinkal.pos.app.R;
 import com.prinkal.pos.app.databinding.ActivityInventoryReportBinding;
 import com.prinkal.pos.app.fragment.RevenueReportFragment;
 
+import org.jetbrains.annotations.NotNull;
+
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -53,15 +55,16 @@ public class SalesAndReportingActivity extends BaseActivity {
         super.onBackPressed();
     }
 
-    public class ViewPagerAdapter extends FragmentStatePagerAdapter {
+    public static class ViewPagerAdapter extends FragmentStatePagerAdapter {
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
+        @NotNull
         @Override
         public Fragment getItem(int i) {
             Fragment fragment;
-            if (i == 0) {
+            if (i == 1) {
                 fragment = new RevenueReportFragment();
             } else
                 fragment = new InventoryReportFragment();
