@@ -120,5 +120,7 @@ dependencies {
     /*implementation('com.google.firebase:firebase-config:20.0.2') {
         exclude group: 'com.google.android.gms', module: 'play-services-vision'
     }*/
+
+    implementation 'com.anggrayudi:storage:1.1.0'
 }
 apply plugin: 'com.google.gms.google-services'

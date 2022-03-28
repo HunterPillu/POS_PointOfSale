@@ -1,5 +1,9 @@
 package com.prinkal.pos.app.helper;
 
+import static android.content.ContentValues.TAG;
+import static com.prinkal.pos.app.constants.ApplicationConstants.PDF_ALIGNMENT_CENTER;
+import static com.prinkal.pos.app.constants.ApplicationConstants.PDF_ALIGNMENT_RIGHT;
+
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
@@ -49,10 +53,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-import static android.content.ContentValues.TAG;
-import static com.prinkal.pos.app.constants.ApplicationConstants.PDF_ALIGNMENT_CENTER;
-import static com.prinkal.pos.app.constants.ApplicationConstants.PDF_ALIGNMENT_RIGHT;
-
 public class Helper {
 
     private static Helper helper;
@@ -62,8 +62,7 @@ public class Helper {
     public static String DB_NAME_IMAGES = "db_pos_images.zip";
 
     public static synchronized Helper getInstanse() {
-        if (helper == null)
-            helper = new Helper();
+        if (helper == null) helper = new Helper();
         return helper;
     }
 
@@ -205,8 +204,7 @@ public class Helper {
         String invoiceFolder = Environment.getExternalStorageDirectory().getPath() + "/Prinkal-Pos-Invoices";
         String invoiceNO = "order-" + orderData.getOrderId();
         File invoiceFolderFile = new File(invoiceFolder);
-        if (!invoiceFolderFile.exists())
-            invoiceFolderFile.mkdirs();
+        if (!invoiceFolderFile.exists()) invoiceFolderFile.mkdirs();
         file = new File(invoiceFolderFile.getAbsolutePath(), "/" + invoiceNO + ".pdf");
         if (!file.exists()) {
             try {
@@ -215,10 +213,8 @@ public class Helper {
                 e.printStackTrace();
             }
         }
-        if (fatchInvoiceList(orderData, file, context))
-            return file;
-        else
-            return null;
+        if (fatchInvoiceList(orderData, file, context)) return file;
+        else return null;
     }
 
     public static void setDefaultDataBase(Context context) {
@@ -245,8 +241,7 @@ public class Helper {
 
     private static void imageImport(InputStream imageStreamFile, File imageDirectory) {
         File backupDB = new File(imageDirectory.getAbsolutePath());
-        if (!backupDB.exists())
-            backupDB.mkdirs();
+        if (!backupDB.exists()) backupDB.mkdirs();
         try {
             ZipManager.unzipFolder(imageStreamFile, backupDB.getAbsolutePath().replace("/app_imageDir", ""));
         } catch (Exception e) {
@@ -265,8 +260,7 @@ public class Helper {
             // create an instance of itext document
             Document document = new Document();
 
-            PdfWriter.getInstance(document,
-                    new FileOutputStream(file.getAbsoluteFile()));
+            PdfWriter.getInstance(document, new FileOutputStream(file.getAbsoluteFile()));
             document.open();
 
             //using add method in document to insert a paragraph
@@ -375,12 +369,9 @@ public class Helper {
 
     Paragraph getParagraph(String name, Font font, int alignment) {
         Paragraph paragraph = new Paragraph(name, font);
-        if (alignment == PDF_ALIGNMENT_RIGHT)
-            paragraph.setAlignment(Element.ALIGN_RIGHT);
-        else if (alignment == PDF_ALIGNMENT_CENTER)
-            paragraph.setAlignment(Element.ALIGN_CENTER);
-        else
-            paragraph.setAlignment(Element.ALIGN_LEFT);
+        if (alignment == PDF_ALIGNMENT_RIGHT) paragraph.setAlignment(Element.ALIGN_RIGHT);
+        else if (alignment == PDF_ALIGNMENT_CENTER) paragraph.setAlignment(Element.ALIGN_CENTER);
+        else paragraph.setAlignment(Element.ALIGN_LEFT);
         return paragraph;
     }
 

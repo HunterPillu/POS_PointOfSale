@@ -45,7 +45,7 @@ public interface ApplicationConstants {
     boolean MORE_MENU_OTHERS_ENABLED = true;
     boolean LOG_OUT_ENABLED = true;
 
-    boolean IS_DEMO_USER_ENABLED = true;
+    boolean IS_DEMO_USER_ENABLED = false;
 
     // pdf alignment
     int PDF_ALIGNMENT_LEFT = 0;
